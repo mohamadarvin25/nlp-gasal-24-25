@@ -1,0 +1,491 @@
+(myenv) C:\Users\moham\OneDrive\Desktop\NLP\SimCSE>python train.py --model_name_or_path bert-base-uncased --train_file data/wiki1m_for_simcse.txt --output_dir result/my-unsup-simcse-bert-base-uncased --num_train_epochs 1 --per_device_train_batch_size 64 --learning_rate 3e-5 --max_seq_length 32 --evaluation_strategy steps --metric_for_best_model stsb_spearman --load_best_model_at_end --eval_steps 125 --pooler_type cls --mlp_only_train --overwrite_output_dir --temp 0.05 --do_train --do_eval --fp16
+11/07/2024 20:35:29 - INFO - __main__ -   PyTorch: setting up devices
+11/07/2024 20:35:30 - WARNING - __main__ -   Process rank: -1, device: cuda:0, n_gpu: 1 distributed training: False, 16-bits training: True
+11/07/2024 20:35:30 - INFO - __main__ -   Training/evaluation parameters OurTrainingArguments(output_dir='result/my-unsup-simcse-bert-base-uncased', overwrite_output_dir=True, do_train=True, do_eval=True, do_predict=False, evaluation_strategy=<EvaluationStrategy.STEPS: 'steps'>, prediction_loss_only=False, per_device_train_batch_size=64, per_device_eval_batch_size=8, per_gpu_train_batch_size=None, per_gpu_eval_batch_size=None, gradient_accumulation_steps=1, eval_accumulation_steps=None, learning_rate=3e-05, weight_decay=0.0, adam_beta1=0.9, adam_beta2=0.999, adam_epsilon=1e-08, max_grad_norm=1.0, num_train_epochs=1.0, max_steps=-1, lr_scheduler_type=<SchedulerType.LINEAR: 'linear'>, warmup_steps=0, logging_dir='runs\\Nov07_20-35-29_LAPTOP-EKA500FC', logging_first_step=False, logging_steps=500, save_steps=500, save_total_limit=None, no_cuda=False, seed=42, fp16=True, fp16_opt_level='O1', fp16_backend='auto', local_rank=-1, tpu_num_cores=None, tpu_metrics_debug=False, debug=False, dataloader_drop_last=False, eval_steps=125, dataloader_num_workers=0, past_index=-1, run_name='result/my-unsup-simcse-bert-base-uncased', disable_tqdm=False, remove_unused_columns=True, label_names=None, load_best_model_at_end=True, metric_for_best_model='stsb_spearman', greater_is_better=True, ignore_data_skip=False, sharded_ddp=False, deepspeed=None, label_smoothing_factor=0.0, adafactor=False, eval_transfer=False)
+[INFO|configuration_utils.py:445] 2024-11-07 20:35:31,583 >> loading configuration file https://huggingface.co/bert-base-uncased/resolve/main/config.json from cache at C:\Users\moham/.cache\huggingface\transformers\3c61d016573b14f7f008c02c4e51a366c67ab274726fe2910691e2a761acf43e.37395cee442ab11005bcd270f3c34464dc1704b715b5d7d52b1a461abe3b9e4e
+[INFO|configuration_utils.py:481] 2024-11-07 20:35:31,584 >> Model config BertConfig {
+  "architectures": [
+    "BertForMaskedLM"
+  ],
+  "attention_probs_dropout_prob": 0.1,
+  "gradient_checkpointing": false,
+  "hidden_act": "gelu",
+  "hidden_dropout_prob": 0.1,
+  "hidden_size": 768,
+  "initializer_range": 0.02,
+  "intermediate_size": 3072,
+  "layer_norm_eps": 1e-12,
+  "max_position_embeddings": 512,
+  "model_type": "bert",
+  "num_attention_heads": 12,
+  "num_hidden_layers": 12,
+  "pad_token_id": 0,
+  "position_embedding_type": "absolute",
+  "transformers_version": "4.2.1",
+  "type_vocab_size": 2,
+  "use_cache": true,
+  "vocab_size": 30522
+}
+
+[INFO|configuration_utils.py:445] 2024-11-07 20:35:31,912 >> loading configuration file https://huggingface.co/bert-base-uncased/resolve/main/config.json from cache at C:\Users\moham/.cache\huggingface\transformers\3c61d016573b14f7f008c02c4e51a366c67ab274726fe2910691e2a761acf43e.37395cee442ab11005bcd270f3c34464dc1704b715b5d7d52b1a461abe3b9e4e
+[INFO|configuration_utils.py:481] 2024-11-07 20:35:31,913 >> Model config BertConfig {
+  "architectures": [
+    "BertForMaskedLM"
+  ],
+  "attention_probs_dropout_prob": 0.1,
+  "gradient_checkpointing": false,
+  "hidden_act": "gelu",
+  "hidden_dropout_prob": 0.1,
+  "hidden_size": 768,
+  "initializer_range": 0.02,
+  "intermediate_size": 3072,
+  "layer_norm_eps": 1e-12,
+  "max_position_embeddings": 512,
+  "model_type": "bert",
+  "num_attention_heads": 12,
+  "num_hidden_layers": 12,
+  "pad_token_id": 0,
+  "position_embedding_type": "absolute",
+  "transformers_version": "4.2.1",
+  "type_vocab_size": 2,
+  "use_cache": true,
+  "vocab_size": 30522
+}
+
+[INFO|tokenization_utils_base.py:1766] 2024-11-07 20:35:33,472 >> loading file https://huggingface.co/bert-base-uncased/resolve/main/vocab.txt from cache at C:\Users\moham/.cache\huggingface\transformers\45c3f7a79a80e1cf0a489e5c62b43f173c15db47864303a55d623bb3c96f72a5.d789d64ebfe299b0e416afc4a169632f903f693095b4629a7ea271d5a0cf2c99
+[INFO|tokenization_utils_base.py:1766] 2024-11-07 20:35:33,472 >> loading file https://huggingface.co/bert-base-uncased/resolve/main/tokenizer.json from cache at C:\Users\moham/.cache\huggingface\transformers\534479488c54aeaf9c3406f647aa2ec13648c06771ffe269edabebd4c412da1d.7f2721073f19841be16f41b0a70b600ca6b880c8f3df6f3535cbc704371bdfa4
+[INFO|modeling_utils.py:1027] 2024-11-07 20:35:33,834 >> loading weights file https://huggingface.co/bert-base-uncased/resolve/main/pytorch_model.bin from cache at C:\Users\moham/.cache\huggingface\transformers\a8041bf617d7f94ea26d15e218abd04afc2004805632abc0ed2066aa16d50d04.faf6ea826ae9c5867d12b22257f9877e6b8367890837bd60f7c54a29633f7f2f
+[WARNING|modeling_utils.py:1134] 2024-11-07 20:35:37,889 >> Some weights of the model checkpoint at bert-base-uncased were not used when initializing BertForCL: ['cls.predictions.bias', 'cls.predictions.transform.dense.weight', 'cls.predictions.transform.dense.bias', 'cls.predictions.decoder.weight', 'cls.seq_relationship.weight', 'cls.seq_relationship.bias', 'cls.predictions.transform.LayerNorm.weight', 'cls.predictions.transform.LayerNorm.bias', 'bert.pooler.dense.weight', 'bert.pooler.dense.bias']
+- This IS expected if you are initializing BertForCL from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing BertForCL from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+[WARNING|modeling_utils.py:1145] 2024-11-07 20:35:37,890 >> Some weights of BertForCL were not initialized from the model checkpoint at bert-base-uncased and are newly initialized: ['mlp.dense.weight', 'mlp.dense.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+[INFO|trainer.py:441] 2024-11-07 20:35:56,548 >> The following columns in the training set don't have a corresponding argument in `BertForCL.forward` and have been ignored: .
+[INFO|trainer.py:358] 2024-11-07 20:35:56,549 >> Using amp fp16 backend
+11/07/2024 20:35:56 - INFO - simcse.trainers -   ***** Running training *****
+11/07/2024 20:35:56 - INFO - simcse.trainers -     Num examples = 1000000
+11/07/2024 20:35:56 - INFO - simcse.trainers -     Num Epochs = 1
+11/07/2024 20:35:56 - INFO - simcse.trainers -     Instantaneous batch size per device = 64
+11/07/2024 20:35:56 - INFO - simcse.trainers -     Total train batch size (w. parallel, distributed & accumulation) = 6411/07/2024 20:35:56 - INFO - simcse.trainers -     Gradient Accumulation steps = 1
+11/07/2024 20:35:56 - INFO - simcse.trainers -     Total optimization steps = 15625
+  0%|                                                                                        | 0/15625 [00:00<?, ?it/s]C:\Users\moham\OneDrive\Desktop\NLP\SimCSE\myenv\lib\site-packages\torch\optim\lr_scheduler.py:131: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn("Detected call of `lr_scheduler.step()` before `optimizer.step()`. "
+{'eval_stsb_spearman': 0.62275008702236, 'eval_sickr_spearman': 0.5991067698479235, 'eval_avg_sts': 0.6109284284351417, 'epoch': 0.01}
+  1%|▌                                                                           | 125/15625 [13:59<8:22:38,  1.95s/it][INFO|trainer.py:1344] 2024-11-07 20:49:56,490 >> Saving model checkpoint to result/my-unsup-simcse-bert-base-uncased
+[INFO|configuration_utils.py:300] 2024-11-07 20:49:56,490 >> Configuration saved in result/my-unsup-simcse-bert-base-uncased\config.json
+[INFO|modeling_utils.py:817] 2024-11-07 20:49:57,529 >> Model weights saved in result/my-unsup-simcse-bert-base-uncased\pytorch_model.bin
+{'eval_stsb_spearman': 0.7039970112746927, 'eval_sickr_spearman': 0.6528701911182693, 'eval_avg_sts': 0.678433601196481, 'epoch': 0.02}
+  2%|█▏                                                                          | 250/15625 [18:59<2:53:01,  1.48it/s][INFO|trainer.py:1344] 2024-11-07 20:54:56,108 >> Saving model checkpoint to result/my-unsup-simcse-bert-base-uncased
+[INFO|configuration_utils.py:300] 2024-11-07 20:54:56,108 >> Configuration saved in result/my-unsup-simcse-bert-base-uncased\config.json
+[INFO|modeling_utils.py:817] 2024-11-07 20:54:57,703 >> Model weights saved in result/my-unsup-simcse-bert-base-uncased\pytorch_model.bin
+{'eval_stsb_spearman': 0.7242086461834673, 'eval_sickr_spearman': 0.6737309630326673, 'eval_avg_sts': 0.6989698046080672, 'epoch': 0.02}
+  2%|█▊                                                                          | 375/15625 [24:53<3:00:46,  1.41it/s][INFO|trainer.py:1344] 2024-11-07 21:00:50,127 >> Saving model checkpoint to result/my-unsup-simcse-bert-base-uncased
+[INFO|configuration_utils.py:300] 2024-11-07 21:00:50,127 >> Configuration saved in result/my-unsup-simcse-bert-base-uncased\config.json
+[INFO|modeling_utils.py:817] 2024-11-07 21:00:51,797 >> Model weights saved in result/my-unsup-simcse-bert-base-uncased\pytorch_model.bin
+{'loss': 0.0111, 'learning_rate': 2.904e-05, 'epoch': 0.03}
+{'eval_stsb_spearman': 0.739653274252235, 'eval_sickr_spearman': 0.7063458100287976, 'eval_avg_sts': 0.7229995421405163, 'epoch': 0.03}
+  3%|██▍                                                                         | 500/15625 [30:40<5:15:01,  1.25s/it][INFO|trainer.py:1344] 2024-11-07 21:06:37,443 >> Saving model checkpoint to result/my-unsup-simcse-bert-base-uncased
+[INFO|configuration_utils.py:300] 2024-11-07 21:06:37,445 >> Configuration saved in result/my-unsup-simcse-bert-base-uncased\config.json
+[INFO|modeling_utils.py:817] 2024-11-07 21:06:38,723 >> Model weights saved in result/my-unsup-simcse-bert-base-uncased\pytorch_model.bin
+{'eval_stsb_spearman': 0.7423456166229767, 'eval_sickr_spearman': 0.7050161650476864, 'eval_avg_sts': 0.7236808908353316, 'epoch': 0.04}
+  4%|███                                                                         | 625/15625 [36:47<3:55:37,  1.06it/s][INFO|trainer.py:1344] 2024-11-07 21:12:43,674 >> Saving model checkpoint to result/my-unsup-simcse-bert-base-uncased
+[INFO|configuration_utils.py:300] 2024-11-07 21:12:43,676 >> Configuration saved in result/my-unsup-simcse-bert-base-uncased\config.json
+[INFO|modeling_utils.py:817] 2024-11-07 21:12:44,695 >> Model weights saved in result/my-unsup-simcse-bert-base-uncased\pytorch_model.bin
+{'eval_stsb_spearman': 0.7498145505963516, 'eval_sickr_spearman': 0.7084743563201291, 'eval_avg_sts': 0.7291444534582403, 'epoch': 0.05}
+  5%|███▋                                                                        | 750/15625 [43:57<5:02:40,  1.22s/it][INFO|trainer.py:1344] 2024-11-07 21:19:54,047 >> Saving model checkpoint to result/my-unsup-simcse-bert-base-uncased
+[INFO|configuration_utils.py:300] 2024-11-07 21:19:54,055 >> Configuration saved in result/my-unsup-simcse-bert-base-uncased\config.json
+[INFO|modeling_utils.py:817] 2024-11-07 21:19:55,274 >> Model weights saved in result/my-unsup-simcse-bert-base-uncased\pytorch_model.bin
+{'eval_stsb_spearman': 0.7500494315411549, 'eval_sickr_spearman': 0.7066397123384974, 'eval_avg_sts': 0.7283445719398262, 'epoch': 0.06}
+  6%|████▎                                                                       | 875/15625 [50:10<3:56:40,  1.04it/s][INFO|trainer.py:1344] 2024-11-07 21:26:06,665 >> Saving model checkpoint to result/my-unsup-simcse-bert-base-uncased
+[INFO|configuration_utils.py:300] 2024-11-07 21:26:06,667 >> Configuration saved in result/my-unsup-simcse-bert-base-uncased\config.json
+[INFO|modeling_utils.py:817] 2024-11-07 21:26:07,915 >> Model weights saved in result/my-unsup-simcse-bert-base-uncased\pytorch_model.bin
+{'loss': 0.0001, 'learning_rate': 2.8080000000000002e-05, 'epoch': 0.06}
+{'eval_stsb_spearman': 0.7809524581782722, 'eval_sickr_spearman': 0.7159421839406254, 'eval_avg_sts': 0.7484473210594488, 'epoch': 0.06}
+  6%|████▊                                                                      | 1000/15625 [56:26<4:08:28,  1.02s/it][INFO|trainer.py:1344] 2024-11-07 21:32:23,460 >> Saving model checkpoint to result/my-unsup-simcse-bert-base-uncased
+[INFO|configuration_utils.py:300] 2024-11-07 21:32:23,460 >> Configuration saved in result/my-unsup-simcse-bert-base-uncased\config.json
+[INFO|modeling_utils.py:817] 2024-11-07 21:32:24,880 >> Model weights saved in result/my-unsup-simcse-bert-base-uncased\pytorch_model.bin
+{'eval_stsb_spearman': 0.798331771937949, 'eval_sickr_spearman': 0.7191596913637617, 'eval_avg_sts': 0.7587457316508553, 'epoch': 0.07}
+  7%|█████▎                                                                   | 1125/15625 [1:03:03<4:15:19,  1.06s/it][INFO|trainer.py:1344] 2024-11-07 21:39:00,115 >> Saving model checkpoint to result/my-unsup-simcse-bert-base-uncased
+[INFO|configuration_utils.py:300] 2024-11-07 21:39:00,117 >> Configuration saved in result/my-unsup-simcse-bert-base-uncased\config.json
+[INFO|modeling_utils.py:817] 2024-11-07 21:39:01,668 >> Model weights saved in result/my-unsup-simcse-bert-base-uncased\pytorch_model.bin
+{'eval_stsb_spearman': 0.7983023324159055, 'eval_sickr_spearman': 0.7182554098169863, 'eval_avg_sts': 0.7582788711164459, 'epoch': 0.08}
+{'eval_stsb_spearman': 0.7764002639592084, 'eval_sickr_spearman': 0.6959660655557669, 'eval_avg_sts': 0.7361831647574877, 'epoch': 0.09}
+{'loss': 0.0001, 'learning_rate': 2.712e-05, 'epoch': 0.1}
+{'eval_stsb_spearman': 0.7907811782888086, 'eval_sickr_spearman': 0.7042071291750629, 'eval_avg_sts': 0.7474941537319357, 'epoch': 0.1}
+{'eval_stsb_spearman': 0.774293766353379, 'eval_sickr_spearman': 0.6818037423757768, 'eval_avg_sts': 0.7280487543645779, 'epoch': 0.1}
+{'eval_stsb_spearman': 0.7553398170782685, 'eval_sickr_spearman': 0.6769857425905196, 'eval_avg_sts': 0.716162779834394, 'epoch': 0.11}
+{'eval_stsb_spearman': 0.7536437821030023, 'eval_sickr_spearman': 0.6888984163692004, 'eval_avg_sts': 0.7212710992361013, 'epoch': 0.12}
+{'loss': 0.0003, 'learning_rate': 2.616e-05, 'epoch': 0.13}
+{'eval_stsb_spearman': 0.779687282236006, 'eval_sickr_spearman': 0.7308834588204862, 'eval_avg_sts': 0.7552853705282461, 'epoch': 0.13}
+{'eval_stsb_spearman': 0.7811205899667502, 'eval_sickr_spearman': 0.7267672414583415, 'eval_avg_sts': 0.7539439157125458, 'epoch': 0.14}
+{'eval_stsb_spearman': 0.7904432504937853, 'eval_sickr_spearman': 0.7370818244299734, 'eval_avg_sts': 0.7637625374618793, 'epoch': 0.14}
+{'eval_stsb_spearman': 0.7973814161206849, 'eval_sickr_spearman': 0.7422662534881017, 'eval_avg_sts': 0.7698238348043933, 'epoch': 0.15}
+{'loss': 0.0001, 'learning_rate': 2.52e-05, 'epoch': 0.16}
+{'eval_stsb_spearman': 0.7967797110796423, 'eval_sickr_spearman': 0.7399754101050109, 'eval_avg_sts': 0.7683775605923266, 'epoch': 0.16}
+{'eval_stsb_spearman': 0.8021729523412656, 'eval_sickr_spearman': 0.7426733651038911, 'eval_avg_sts': 0.7724231587225784, 'epoch': 0.17}
+ 17%|████████████▎                                                            | 2625/15625 [2:03:00<2:54:16,  1.24it/s][INFO|trainer.py:1344] 2024-11-07 22:38:57,287 >> Saving model checkpoint to result/my-unsup-simcse-bert-base-uncased
+[INFO|configuration_utils.py:300] 2024-11-07 22:38:57,287 >> Configuration saved in result/my-unsup-simcse-bert-base-uncased\config.json
+[INFO|modeling_utils.py:817] 2024-11-07 22:38:58,425 >> Model weights saved in result/my-unsup-simcse-bert-base-uncased\pytorch_model.bin
+{'eval_stsb_spearman': 0.8033793188310827, 'eval_sickr_spearman': 0.74051744108474, 'eval_avg_sts': 0.7719483799579114, 'epoch': 0.18}
+ 18%|████████████▊                                                            | 2750/15625 [2:07:41<2:40:19,  1.34it/s][INFO|trainer.py:1344] 2024-11-07 22:43:37,783 >> Saving model checkpoint to result/my-unsup-simcse-bert-base-uncased
+[INFO|configuration_utils.py:300] 2024-11-07 22:43:37,783 >> Configuration saved in result/my-unsup-simcse-bert-base-uncased\config.json
+[INFO|modeling_utils.py:817] 2024-11-07 22:43:39,008 >> Model weights saved in result/my-unsup-simcse-bert-base-uncased\pytorch_model.bin
+{'eval_stsb_spearman': 0.8010095022511342, 'eval_sickr_spearman': 0.7405426574129951, 'eval_avg_sts': 0.7707760798320646, 'epoch': 0.18}
+{'loss': 0.0001, 'learning_rate': 2.4240000000000002e-05, 'epoch': 0.19}
+{'eval_stsb_spearman': 0.7904663412570103, 'eval_sickr_spearman': 0.7347159564664362, 'eval_avg_sts': 0.7625911488617232, 'epoch': 0.19}
+{'eval_stsb_spearman': 0.798331916066162, 'eval_sickr_spearman': 0.7274809836257118, 'eval_avg_sts': 0.7629064498459369, 'epoch': 0.2}
+{'eval_stsb_spearman': 0.7456618259770847, 'eval_sickr_spearman': 0.6906167770542504, 'eval_avg_sts': 0.7181393015156676, 'epoch': 0.21}
+{'eval_stsb_spearman': 0.7685801702915913, 'eval_sickr_spearman': 0.7118239492722201, 'eval_avg_sts': 0.7402020597819057, 'epoch': 0.22}
+{'loss': 0.0001, 'learning_rate': 2.328e-05, 'epoch': 0.22}
+{'eval_stsb_spearman': 0.8008402405686391, 'eval_sickr_spearman': 0.7357266269028969, 'eval_avg_sts': 0.768283433735768, 'epoch': 0.22}
+{'eval_stsb_spearman': 0.7964271282781656, 'eval_sickr_spearman': 0.7377247207227224, 'eval_avg_sts': 0.767075924500444, 'epoch': 0.23}
+{'eval_stsb_spearman': 0.7956995832933867, 'eval_sickr_spearman': 0.7351464111975246, 'eval_avg_sts': 0.7654229972454556, 'epoch': 0.24}
+{'eval_stsb_spearman': 0.8115681776778695, 'eval_sickr_spearman': 0.7441769787344114, 'eval_avg_sts': 0.7778725782061404, 'epoch': 0.25}
+ 25%|██████████████████                                                       | 3875/15625 [2:49:23<2:31:45,  1.29it/s][INFO|trainer.py:1344] 2024-11-07 23:25:19,767 >> Saving model checkpoint to result/my-unsup-simcse-bert-base-uncased
+[INFO|configuration_utils.py:300] 2024-11-07 23:25:19,770 >> Configuration saved in result/my-unsup-simcse-bert-base-uncased\config.json
+[INFO|modeling_utils.py:817] 2024-11-07 23:25:21,192 >> Model weights saved in result/my-unsup-simcse-bert-base-uncased\pytorch_model.bin
+{'loss': 0.0002, 'learning_rate': 2.232e-05, 'epoch': 0.26}
+{'eval_stsb_spearman': 0.8044353971357163, 'eval_sickr_spearman': 0.7402545188354678, 'eval_avg_sts': 0.7723449579855921, 'epoch': 0.26}
+{'eval_stsb_spearman': 0.7975300728067723, 'eval_sickr_spearman': 0.7252054141328783, 'eval_avg_sts': 0.7613677434698254, 'epoch': 0.26}
+{'eval_stsb_spearman': 0.7682527572545431, 'eval_sickr_spearman': 0.6993248637760815, 'eval_avg_sts': 0.7337888105153123, 'epoch': 0.27}
+{'eval_stsb_spearman': 0.8011507237011704, 'eval_sickr_spearman': 0.7262734337044562, 'eval_avg_sts': 0.7637120787028133, 'epoch': 0.28}
+{'loss': 0.0001, 'learning_rate': 2.136e-05, 'epoch': 0.29}
+{'eval_stsb_spearman': 0.8039872099944742, 'eval_sickr_spearman': 0.7220221528850674, 'eval_avg_sts': 0.7630046814397708, 'epoch': 0.29}
+{'eval_stsb_spearman': 0.794202148098952, 'eval_sickr_spearman': 0.7188007069116132, 'eval_avg_sts': 0.7565014275052826, 'epoch': 0.3}
+{'eval_stsb_spearman': 0.7812021958948808, 'eval_sickr_spearman': 0.7116666954461117, 'eval_avg_sts': 0.7464344456704963, 'epoch': 0.3}
+{'eval_stsb_spearman': 0.7772768944558603, 'eval_sickr_spearman': 0.69418942644142, 'eval_avg_sts': 0.7357331604486401, 'epoch': 0.31}
+{'loss': 0.0002, 'learning_rate': 2.04e-05, 'epoch': 0.32}
+{'eval_stsb_spearman': 0.798669523060114, 'eval_sickr_spearman': 0.7134449028835536, 'eval_avg_sts': 0.7560572129718337, 'epoch': 0.32}
+{'eval_stsb_spearman': 0.7786845596205184, 'eval_sickr_spearman': 0.6972537146509687, 'eval_avg_sts': 0.7379691371357435, 'epoch': 0.33}
+{'eval_stsb_spearman': 0.7883553671951091, 'eval_sickr_spearman': 0.7071998990745701, 'eval_avg_sts': 0.7477776331348396, 'epoch': 0.34}
+{'eval_stsb_spearman': 0.7870428246656159, 'eval_sickr_spearman': 0.7086282479691367, 'eval_avg_sts': 0.7478355363173763, 'epoch': 0.34}
+{'loss': 0.0, 'learning_rate': 1.944e-05, 'epoch': 0.35}
+{'eval_stsb_spearman': 0.7877873981318669, 'eval_sickr_spearman': 0.7098238381461343, 'eval_avg_sts': 0.7488056181390006, 'epoch': 0.35}
+{'eval_stsb_spearman': 0.7844915346532513, 'eval_sickr_spearman': 0.7128660320490214, 'eval_avg_sts': 0.7486787833511364, 'epoch': 0.36}
+{'eval_stsb_spearman': 0.7827783608761525, 'eval_sickr_spearman': 0.7109831168104445, 'eval_avg_sts': 0.7468807388432985, 'epoch': 0.37}
+{'eval_stsb_spearman': 0.7754609833520963, 'eval_sickr_spearman': 0.7141669544314728, 'eval_avg_sts': 0.7448139688917845, 'epoch': 0.38}
+{'loss': 0.0001, 'learning_rate': 1.848e-05, 'epoch': 0.38}
+{'eval_stsb_spearman': 0.7806136109696423, 'eval_sickr_spearman': 0.7196244883323782, 'eval_avg_sts': 0.7501190496510103, 'epoch': 0.38}
+{'eval_stsb_spearman': 0.7755443145708394, 'eval_sickr_spearman': 0.7164270579096431, 'eval_avg_sts': 0.7459856862402412, 'epoch': 0.39}
+{'eval_stsb_spearman': 0.7708519523109414, 'eval_sickr_spearman': 0.7114628514516085, 'eval_avg_sts': 0.741157401881275, 'epoch': 0.4}
+{'eval_stsb_spearman': 0.7863142697029311, 'eval_sickr_spearman': 0.7167755235505766, 'eval_avg_sts': 0.7515448966267538, 'epoch': 0.41}
+{'loss': 0.0001, 'learning_rate': 1.7519999999999998e-05, 'epoch': 0.42}
+{'eval_stsb_spearman': 0.8013199455255967, 'eval_sickr_spearman': 0.7288729249453882, 'eval_avg_sts': 0.7650964352354925, 'epoch': 0.42}
+{'eval_stsb_spearman': 0.8047035023024683, 'eval_sickr_spearman': 0.73564857636306, 'eval_avg_sts': 0.7701760393327641, 'epoch': 0.42}
+{'eval_stsb_spearman': 0.793886553575668, 'eval_sickr_spearman': 0.7231169257801464, 'eval_avg_sts': 0.7585017396779072, 'epoch': 0.43}
+{'eval_stsb_spearman': 0.7996394792437809, 'eval_sickr_spearman': 0.7310621345178361, 'eval_avg_sts': 0.7653508068808085, 'epoch': 0.44}
+{'loss': 0.0002, 'learning_rate': 1.656e-05, 'epoch': 0.45}
+{'eval_stsb_spearman': 0.8053670312289479, 'eval_sickr_spearman': 0.7321220368332709, 'eval_avg_sts': 0.7687445340311094, 'epoch': 0.45}
+{'eval_stsb_spearman': 0.7988726566518947, 'eval_sickr_spearman': 0.7228483838920059, 'eval_avg_sts': 0.7608605202719503, 'epoch': 0.46}
+{'eval_stsb_spearman': 0.7953709051312038, 'eval_sickr_spearman': 0.7240376339636135, 'eval_avg_sts': 0.7597042695474087, 'epoch': 0.46}
+{'eval_stsb_spearman': 0.7753266980731177, 'eval_sickr_spearman': 0.717535423606429, 'eval_avg_sts': 0.7464310608397733, 'epoch': 0.47}
+{'loss': 0.0001, 'learning_rate': 1.56e-05, 'epoch': 0.48}
+{'eval_stsb_spearman': 0.7806982284656849, 'eval_sickr_spearman': 0.7180305762311545, 'eval_avg_sts': 0.7493644023484197, 'epoch': 0.48}
+{'eval_stsb_spearman': 0.7845600122661006, 'eval_sickr_spearman': 0.7193028720771487, 'eval_avg_sts': 0.7519314421716247, 'epoch': 0.49}
+{'eval_stsb_spearman': 0.7884218245362867, 'eval_sickr_spearman': 0.719828044140273, 'eval_avg_sts': 0.7541249343382799, 'epoch': 0.5}
+{'eval_stsb_spearman': 0.7910873753058267, 'eval_sickr_spearman': 0.7205559554825676, 'eval_avg_sts': 0.7558216653941972, 'epoch': 0.5}
+{'loss': 0.0001, 'learning_rate': 1.464e-05, 'epoch': 0.51}
+{'eval_stsb_spearman': 0.7923695514564343, 'eval_sickr_spearman': 0.7208640269671917, 'eval_avg_sts': 0.756616789211813, 'epoch': 0.51}
+{'eval_stsb_spearman': 0.7879400121159198, 'eval_sickr_spearman': 0.7237085728876611, 'eval_avg_sts': 0.7558242925017904, 'epoch': 0.52}
+{'eval_stsb_spearman': 0.7833724233692966, 'eval_sickr_spearman': 0.7239965193407825, 'eval_avg_sts': 0.7536844713550395, 'epoch': 0.53}
+{'eval_stsb_spearman': 0.7797380612372308, 'eval_sickr_spearman': 0.7219658124030806, 'eval_avg_sts': 0.7508519368201556, 'epoch': 0.54}
+{'loss': 0.0001, 'learning_rate': 1.3680000000000001e-05, 'epoch': 0.54}
+{'eval_stsb_spearman': 0.780430115487536, 'eval_sickr_spearman': 0.7220519801990606, 'eval_avg_sts': 0.7512410478432983, 'epoch': 0.54}
+{'eval_stsb_spearman': 0.7796894021476042, 'eval_sickr_spearman': 0.7223193213096651, 'eval_avg_sts': 0.7510043617286346, 'epoch': 0.55}
+{'eval_stsb_spearman': 0.7955536479570328, 'eval_sickr_spearman': 0.7220493865195828, 'eval_avg_sts': 0.7588015172383078, 'epoch': 0.56}
+{'eval_stsb_spearman': 0.7972872336714307, 'eval_sickr_spearman': 0.7235222122140812, 'eval_avg_sts': 0.760404722942756, 'epoch': 0.57}
+{'loss': 0.0001, 'learning_rate': 1.272e-05, 'epoch': 0.58}
+{'eval_stsb_spearman': 0.8018320287956895, 'eval_sickr_spearman': 0.7246082434486982, 'eval_avg_sts': 0.7632201361221939, 'epoch': 0.58}
+{'eval_stsb_spearman': 0.801363628117402, 'eval_sickr_spearman': 0.7246411447531833, 'eval_avg_sts': 0.7630023864352926, 'epoch': 0.58}
+{'eval_stsb_spearman': 0.799415888342545, 'eval_sickr_spearman': 0.7240685179618382, 'eval_avg_sts': 0.7617422031521917, 'epoch': 0.59}
+{'eval_stsb_spearman': 0.7733878444236504, 'eval_sickr_spearman': 0.7047640497962377, 'eval_avg_sts': 0.7390759471099441, 'epoch': 0.6}
+{'loss': 0.0001, 'learning_rate': 1.1760000000000001e-05, 'epoch': 0.61}
+{'eval_stsb_spearman': 0.7781376163805707, 'eval_sickr_spearman': 0.7090612963797027, 'eval_avg_sts': 0.7435994563801367, 'epoch': 0.61}
+{'eval_stsb_spearman': 0.7776101651478949, 'eval_sickr_spearman': 0.7121516654773324, 'eval_avg_sts': 0.7448809153126137, 'epoch': 0.62}
+{'eval_stsb_spearman': 0.761767801929908, 'eval_sickr_spearman': 0.70265399547896, 'eval_avg_sts': 0.732210898704434, 'epoch': 0.62}
+{'eval_stsb_spearman': 0.7705537190095721, 'eval_sickr_spearman': 0.6992600698202416, 'eval_avg_sts': 0.7349068944149069, 'epoch': 0.63}
+{'loss': 0.0003, 'learning_rate': 1.08e-05, 'epoch': 0.64}
+{'eval_stsb_spearman': 0.769380907498281, 'eval_sickr_spearman': 0.7038273472559917, 'eval_avg_sts': 0.7366041273771364, 'epoch': 0.64}
+{'eval_stsb_spearman': 0.7711315717204946, 'eval_sickr_spearman': 0.7051399411960925, 'eval_avg_sts': 0.7381357564582935, 'epoch': 0.65}
+{'eval_stsb_spearman': 0.7700880621054155, 'eval_sickr_spearman': 0.7038064056957646, 'eval_avg_sts': 0.73694723390059, 'epoch': 0.66}
+{'eval_stsb_spearman': 0.7712186507577763, 'eval_sickr_spearman': 0.7054006540146985, 'eval_avg_sts': 0.7383096523862374, 'epoch': 0.66}
+{'loss': 0.0001, 'learning_rate': 9.84e-06, 'epoch': 0.67}
+{'eval_stsb_spearman': 0.7308969883855776, 'eval_sickr_spearman': 0.6782875295327969, 'eval_avg_sts': 0.7045922589591873, 'epoch': 0.67}
+{'eval_stsb_spearman': 0.7415691220850505, 'eval_sickr_spearman': 0.6852579950979015, 'eval_avg_sts': 0.713413558591476, 'epoch': 0.68}
+{'eval_stsb_spearman': 0.7607218606050105, 'eval_sickr_spearman': 0.6854569879511595, 'eval_avg_sts': 0.723089424278085, 'epoch': 0.69}
+{'eval_stsb_spearman': 0.7680176763386637, 'eval_sickr_spearman': 0.6857448863731797, 'eval_avg_sts': 0.7268812813559217, 'epoch': 0.7}
+{'loss': 0.0001, 'learning_rate': 8.88e-06, 'epoch': 0.7}
+{'eval_stsb_spearman': 0.7694547901114802, 'eval_sickr_spearman': 0.6878081583976567, 'eval_avg_sts': 0.7286314742545685, 'epoch': 0.7}
+{'eval_stsb_spearman': 0.7626619751432616, 'eval_sickr_spearman': 0.6818749724992095, 'eval_avg_sts': 0.7222684738212355, 'epoch': 0.71}
+{'eval_stsb_spearman': 0.7630363319510841, 'eval_sickr_spearman': 0.6820278074639855, 'eval_avg_sts': 0.7225320697075348, 'epoch': 0.72}
+{'eval_stsb_spearman': 0.7636972908025227, 'eval_sickr_spearman': 0.6832785853765354, 'eval_avg_sts': 0.723487938089529, 'epoch': 0.73}
+{'loss': 0.0001, 'learning_rate': 7.92e-06, 'epoch': 0.74}
+{'eval_stsb_spearman': 0.7877247504019118, 'eval_sickr_spearman': 0.6991911451896778, 'eval_avg_sts': 0.7434579477957948, 'epoch': 0.74}
+{'eval_stsb_spearman': 0.786437653938983, 'eval_sickr_spearman': 0.6980493018151896, 'eval_avg_sts': 0.7422434778770863, 'epoch': 0.74}
+{'eval_stsb_spearman': 0.7837976031846715, 'eval_sickr_spearman': 0.695997269068449, 'eval_avg_sts': 0.7398974361265602, 'epoch': 0.75}
+{'eval_stsb_spearman': 0.7833314206719975, 'eval_sickr_spearman': 0.6956324728530267, 'eval_avg_sts': 0.739481946762512, 'epoch': 0.76}
+{'loss': 0.0002, 'learning_rate': 6.96e-06, 'epoch': 0.77}
+{'eval_stsb_spearman': 0.7765883121313526, 'eval_sickr_spearman': 0.6869224168560364, 'eval_avg_sts': 0.7317553644936945, 'epoch': 0.77}
+{'eval_stsb_spearman': 0.7768977283162326, 'eval_sickr_spearman': 0.6880170936889125, 'eval_avg_sts': 0.7324574110025726, 'epoch': 0.78}
+{'eval_stsb_spearman': 0.7787536588175616, 'eval_sickr_spearman': 0.6934030612486752, 'eval_avg_sts': 0.7360783600331184, 'epoch': 0.78}
+{'eval_stsb_spearman': 0.779549561500639, 'eval_sickr_spearman': 0.6941790997546109, 'eval_avg_sts': 0.736864330627625, 'epoch': 0.79}
+{'loss': 0.0001, 'learning_rate': 6e-06, 'epoch': 0.8}
+{'eval_stsb_spearman': 0.7875437456392805, 'eval_sickr_spearman': 0.7039400282199656, 'eval_avg_sts': 0.7457418869296231, 'epoch': 0.8}
+{'eval_stsb_spearman': 0.7870714712924265, 'eval_sickr_spearman': 0.7037329181105644, 'eval_avg_sts': 0.7454021947014955, 'epoch': 0.81}
+{'eval_stsb_spearman': 0.787389636292238, 'eval_sickr_spearman': 0.7041962261150364, 'eval_avg_sts': 0.7457929312036372, 'epoch': 0.82}
+{'eval_stsb_spearman': 0.7870703929998685, 'eval_sickr_spearman': 0.7038633705820703, 'eval_avg_sts': 0.7454668817909693, 'epoch': 0.82}
+{'loss': 0.0, 'learning_rate': 5.04e-06, 'epoch': 0.83}
+{'eval_stsb_spearman': 0.7832407099488512, 'eval_sickr_spearman': 0.7015778106201377, 'eval_avg_sts': 0.7424092602844945, 'epoch': 0.83}
+{'eval_stsb_spearman': 0.7831962212905589, 'eval_sickr_spearman': 0.7009366914781417, 'eval_avg_sts': 0.7420664563843503, 'epoch': 0.84}
+{'eval_stsb_spearman': 0.7870246545341807, 'eval_sickr_spearman': 0.7023280083934996, 'eval_avg_sts': 0.7446763314638402, 'epoch': 0.85}
+{'eval_stsb_spearman': 0.7858499704505416, 'eval_sickr_spearman': 0.7020600909096777, 'eval_avg_sts': 0.7439550306801097, 'epoch': 0.86}
+{'loss': 0.0001, 'learning_rate': 4.080000000000001e-06, 'epoch': 0.86}
+{'eval_stsb_spearman': 0.784701670726724, 'eval_sickr_spearman': 0.7014976947429389, 'eval_avg_sts': 0.7430996827348315, 'epoch': 0.86}
+{'eval_stsb_spearman': 0.7879033722216626, 'eval_sickr_spearman': 0.7013943318126441, 'eval_avg_sts': 0.7446488520171534, 'epoch': 0.87}
+{'eval_stsb_spearman': 0.7878442077795117, 'eval_sickr_spearman': 0.7016688295573629, 'eval_avg_sts': 0.7447565186684373, 'epoch': 0.88}
+{'eval_stsb_spearman': 0.7878502091842652, 'eval_sickr_spearman': 0.7020191684112524, 'eval_avg_sts': 0.7449346887977588, 'epoch': 0.89}
+{'loss': 0.0001, 'learning_rate': 3.1199999999999998e-06, 'epoch': 0.9}
+{'eval_stsb_spearman': 0.7876973934320107, 'eval_sickr_spearman': 0.7019283415984331, 'eval_avg_sts': 0.7448128675152219, 'epoch': 0.9}
+{'eval_stsb_spearman': 0.7875889940807081, 'eval_sickr_spearman': 0.7019412139336184, 'eval_avg_sts': 0.7447651040071632, 'epoch': 0.9}
+{'eval_stsb_spearman': 0.788093906160812, 'eval_sickr_spearman': 0.702335501245324, 'eval_avg_sts': 0.745214703703068, 'epoch': 0.91}
+{'eval_stsb_spearman': 0.7882202051802443, 'eval_sickr_spearman': 0.7028220082717905, 'eval_avg_sts': 0.7455211067260175, 'epoch': 0.92}
+{'loss': 0.0001, 'learning_rate': 2.16e-06, 'epoch': 0.93}
+{'eval_stsb_spearman': 0.7876898087176991, 'eval_sickr_spearman': 0.7028110091495612, 'eval_avg_sts': 0.7452504089336301, 'epoch': 0.93}
+{'eval_stsb_spearman': 0.788058308972005, 'eval_sickr_spearman': 0.7036559722860605, 'eval_avg_sts': 0.7458571406290327, 'epoch': 0.94}
+{'eval_stsb_spearman': 0.789948029512339, 'eval_sickr_spearman': 0.7044981496186763, 'eval_avg_sts': 0.7472230895655076, 'epoch': 0.94}
+{'eval_stsb_spearman': 0.7901544780530207, 'eval_sickr_spearman': 0.7044944031927641, 'eval_avg_sts': 0.7473244406228925, 'epoch': 0.95}
+{'loss': 0.0003, 'learning_rate': 1.2000000000000002e-06, 'epoch': 0.96}
+{'eval_stsb_spearman': 0.793065528099497, 'eval_sickr_spearman': 0.7049152997346664, 'eval_avg_sts': 0.7489904139170818, 'epoch': 0.96}
+{'eval_stsb_spearman': 0.7929636828336639, 'eval_sickr_spearman': 0.7048097273737054, 'eval_avg_sts': 0.7488867051036847, 'epoch': 0.97}
+{'eval_stsb_spearman': 0.7929855205573797, 'eval_sickr_spearman': 0.7046646254162607, 'eval_avg_sts': 0.7488250729868202, 'epoch': 0.98}
+{'eval_stsb_spearman': 0.7926535160649602, 'eval_sickr_spearman': 0.7045900811468289, 'eval_avg_sts': 0.7486217986058945, 'epoch': 0.98}
+{'loss': 0.0001, 'learning_rate': 2.4000000000000003e-07, 'epoch': 0.99}
+{'eval_stsb_spearman': 0.7926555972123458, 'eval_sickr_spearman': 0.7049639072093218, 'eval_avg_sts': 0.7488097522108338, 'epoch': 0.99}
+{'eval_stsb_spearman': 0.7928097759591348, 'eval_sickr_spearman': 0.7051445521818305, 'eval_avg_sts': 0.7489771640704826, 'epoch': 1.0}
+{'eval_stsb_spearman': 0.7928097759591348, 'eval_sickr_spearman': 0.7051445521818305, 'eval_avg_sts': 0.7489771640704826, 'epoch': 1.0}
+100%|█████████████████████████████████████████████████████████████████████████| 15625/15625 [12:49:42<00:00,  1.42it/s]11/08/2024 09:25:38 - INFO - simcse.trainers -
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+11/08/2024 09:25:38 - INFO - simcse.trainers -   Loading best model from result/my-unsup-simcse-bert-base-uncased (score: 0.8115681776778695).
+[INFO|configuration_utils.py:443] 2024-11-08 09:25:38,984 >> loading configuration file result/my-unsup-simcse-bert-base-uncased\config.json
+[INFO|configuration_utils.py:481] 2024-11-08 09:25:38,984 >> Model config BertConfig {
+  "_name_or_path": "bert-base-uncased",
+  "architectures": [
+    "BertForCL"
+  ],
+  "attention_probs_dropout_prob": 0.1,
+  "gradient_checkpointing": false,
+  "hidden_act": "gelu",
+  "hidden_dropout_prob": 0.1,
+  "hidden_size": 768,
+  "initializer_range": 0.02,
+  "intermediate_size": 3072,
+  "layer_norm_eps": 1e-12,
+  "max_position_embeddings": 512,
+  "model_type": "bert",
+  "num_attention_heads": 12,
+  "num_hidden_layers": 12,
+  "pad_token_id": 0,
+  "position_embedding_type": "absolute",
+  "transformers_version": "4.2.1",
+  "type_vocab_size": 2,
+  "use_cache": true,
+  "vocab_size": 30522
+}
+
+[INFO|modeling_utils.py:1025] 2024-11-08 09:25:38,991 >> loading weights file result/my-unsup-simcse-bert-base-uncased\pytorch_model.bin
+[INFO|modeling_utils.py:1143] 2024-11-08 09:25:42,580 >> All model checkpoint weights were used when initializing BertForCL.
+
+[INFO|modeling_utils.py:1151] 2024-11-08 09:25:42,580 >> All the weights of BertForCL were initialized from the model checkpoint at result/my-unsup-simcse-bert-base-uncased.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use BertForCL for predictions without further training.
+{'train_runtime': 46186.2844, 'train_samples_per_second': 0.338, 'epoch': 1.0}
+100%|█████████████████████████████████████████████████████████████████████████| 15625/15625 [12:49:46<00:00,  2.96s/it]
+[INFO|trainer.py:1344] 2024-11-08 09:25:42,840 >> Saving model checkpoint to result/my-unsup-simcse-bert-base-uncased
+[INFO|configuration_utils.py:300] 2024-11-08 09:25:42,840 >> Configuration saved in result/my-unsup-simcse-bert-base-uncased\config.json
+[INFO|modeling_utils.py:817] 2024-11-08 09:25:44,030 >> Model weights saved in result/my-unsup-simcse-bert-base-uncased\pytorch_model.bin
+11/08/2024 09:25:44 - INFO - __main__ -   ***** Train results *****
+11/08/2024 09:25:44 - INFO - __main__ -     epoch = 1.0
+11/08/2024 09:25:44 - INFO - __main__ -     train_runtime = 46186.2844
+11/08/2024 09:25:44 - INFO - __main__ -     train_samples_per_second = 0.338
+11/08/2024 09:25:44 - INFO - __main__ -   *** Evaluate ***
+11/08/2024 09:28:21 - INFO - root -   Generating sentence embeddings
+11/08/2024 09:30:07 - INFO - root -   Generated sentence embeddings
+11/08/2024 09:30:07 - INFO - root -   Training pytorch-MLP-nhid0-rmsprop-bs128 with (inner) 5-fold cross-validation
+11/08/2024 09:30:30 - INFO - root -   Best param found at split 1: l2reg = 0.001                 with score 79.51
+11/08/2024 09:30:53 - INFO - root -   Best param found at split 2: l2reg = 0.001                 with score 79.93
+11/08/2024 09:31:18 - INFO - root -   Best param found at split 3: l2reg = 0.01                 with score 79.61
+11/08/2024 09:31:40 - INFO - root -   Best param found at split 4: l2reg = 0.01                 with score 79.51
+11/08/2024 09:32:01 - INFO - root -   Best param found at split 5: l2reg = 0.001                 with score 79.53
+11/08/2024 09:32:02 - INFO - root -   Generating sentence embeddings
+11/08/2024 09:32:36 - INFO - root -   Generated sentence embeddings
+11/08/2024 09:32:36 - INFO - root -   Training pytorch-MLP-nhid0-rmsprop-bs128 with (inner) 5-fold cross-validation
+11/08/2024 09:32:45 - INFO - root -   Best param found at split 1: l2reg = 0.0001                 with score 86.06
+11/08/2024 09:32:54 - INFO - root -   Best param found at split 2: l2reg = 0.01                 with score 85.93
+11/08/2024 09:33:01 - INFO - root -   Best param found at split 3: l2reg = 0.01                 with score 86.03
+11/08/2024 09:33:10 - INFO - root -   Best param found at split 4: l2reg = 0.001                 with score 85.53
+11/08/2024 09:33:18 - INFO - root -   Best param found at split 5: l2reg = 0.01                 with score 85.13
+11/08/2024 09:33:18 - INFO - root -   Generating sentence embeddings
+11/08/2024 09:35:51 - INFO - root -   Generated sentence embeddings
+11/08/2024 09:35:51 - INFO - root -   Training pytorch-MLP-nhid0-rmsprop-bs128 with (inner) 5-fold cross-validation
+11/08/2024 09:36:15 - INFO - root -   Best param found at split 1: l2reg = 0.01                 with score 94.29
+11/08/2024 09:36:42 - INFO - root -   Best param found at split 2: l2reg = 0.0001                 with score 94.52
+11/08/2024 09:37:01 - INFO - root -   Best param found at split 3: l2reg = 0.001                 with score 94.29
+11/08/2024 09:37:24 - INFO - root -   Best param found at split 4: l2reg = 0.001                 with score 94.56
+11/08/2024 09:37:46 - INFO - root -   Best param found at split 5: l2reg = 0.001                 with score 94.18
+11/08/2024 09:37:47 - INFO - root -   Generating sentence embeddings
+11/08/2024 09:38:22 - INFO - root -   Generated sentence embeddings
+11/08/2024 09:38:22 - INFO - root -   Training pytorch-MLP-nhid0-rmsprop-bs128 with (inner) 5-fold cross-validation
+11/08/2024 09:38:46 - INFO - root -   Best param found at split 1: l2reg = 0.0001                 with score 87.11
+11/08/2024 09:39:07 - INFO - root -   Best param found at split 2: l2reg = 0.0001                 with score 86.25
+11/08/2024 09:39:30 - INFO - root -   Best param found at split 3: l2reg = 0.001                 with score 87.67
+11/08/2024 09:39:53 - INFO - root -   Best param found at split 4: l2reg = 1e-05                 with score 87.12
+11/08/2024 09:40:17 - INFO - root -   Best param found at split 5: l2reg = 0.0001                 with score 86.42
+11/08/2024 09:40:18 - INFO - root -   Computing embedding for train
+11/08/2024 09:48:12 - INFO - root -   Computed train embeddings
+11/08/2024 09:48:12 - INFO - root -   Computing embedding for dev
+11/08/2024 09:48:24 - INFO - root -   Computed dev embeddings
+11/08/2024 09:48:24 - INFO - root -   Computing embedding for test
+11/08/2024 09:48:49 - INFO - root -   Computed test embeddings
+11/08/2024 09:48:49 - INFO - root -   Training pytorch-MLP-nhid0-rmsprop-bs128 with standard validation..
+11/08/2024 09:49:51 - INFO - root -   [('reg:1e-05', 85.09), ('reg:0.0001', 84.98), ('reg:0.001', 85.21), ('reg:0.01', 85.21)]
+11/08/2024 09:49:51 - INFO - root -   Validation : best param found is reg = 0.001 with score             85.21
+11/08/2024 09:49:51 - INFO - root -   Evaluating...
+11/08/2024 09:50:02 - INFO - root -   ***** Transfer task : TREC *****
+
+
+11/08/2024 09:51:00 - INFO - root -   Computed train embeddings
+11/08/2024 09:51:04 - INFO - root -   Computed test embeddings
+11/08/2024 09:51:04 - INFO - root -   Training pytorch-MLP-nhid0-rmsprop-bs128 with 5-fold cross-validation
+11/08/2024 09:51:18 - INFO - root -   [('reg:1e-05', 81.51), ('reg:0.0001', 81.46), ('reg:0.001', 80.85), ('reg:0.01', 77.16)]
+11/08/2024 09:51:18 - INFO - root -   Cross-validation : best param found is reg = 1e-05             with score 81.51
+11/08/2024 09:51:18 - INFO - root -   Evaluating...
+11/08/2024 09:51:19 - INFO - root -   ***** Transfer task : MRPC *****
+
+
+11/08/2024 09:51:19 - INFO - root -   Computing embedding for train
+11/08/2024 09:54:05 - INFO - root -   Computed train embeddings
+11/08/2024 09:54:05 - INFO - root -   Computing embedding for test
+11/08/2024 09:55:15 - INFO - root -   Computed test embeddings
+11/08/2024 09:55:15 - INFO - root -   Training pytorch-MLP-nhid0-rmsprop-bs128 with 5-fold cross-validation
+11/08/2024 09:55:27 - INFO - root -   [('reg:1e-05', 74.9), ('reg:0.0001', 74.75), ('reg:0.001', 74.41), ('reg:0.01', 73.63)]
+11/08/2024 09:55:27 - INFO - root -   Cross-validation : best param found is reg = 1e-05             with score 74.9
+11/08/2024 09:55:27 - INFO - root -   Evaluating...
+11/08/2024 09:55:28 - INFO - __main__ -   ***** Eval results *****
+11/08/2024 09:55:28 - INFO - __main__ -     epoch = 1.0
+11/08/2024 09:55:28 - INFO - __main__ -     eval_CR = 85.74
+11/08/2024 09:55:28 - INFO - __main__ -     eval_MPQA = 86.91
+11/08/2024 09:55:28 - INFO - __main__ -     eval_MR = 79.62
+11/08/2024 09:55:28 - INFO - __main__ -     eval_MRPC = 74.9
+11/08/2024 09:55:28 - INFO - __main__ -     eval_SST2 = 85.21
+11/08/2024 09:55:28 - INFO - __main__ -     eval_SUBJ = 94.37
+11/08/2024 09:55:28 - INFO - __main__ -     eval_TREC = 81.51
+11/08/2024 09:55:28 - INFO - __main__ -     eval_avg_sts = 0.7778725782061404
+11/08/2024 09:55:28 - INFO - __main__ -     eval_avg_transfer = 84.03714285714285
+11/08/2024 09:55:28 - INFO - __main__ -     eval_sickr_spearman = 0.7441769787344114
+11/08/2024 09:55:28 - INFO - __main__ -     eval_stsb_spearman = 0.8115681776778695
+
+(myenv) C:\Users\moham\OneDrive\Desktop\NLP\SimCSE>python evaluation.py --model_name_or_path result/my-unsup-simcse-bert-base-uncased --pooler cls --task_set sts --mode test
+Some weights of BertModel were not initialized from the model checkpoint at result/my-unsup-simcse-bert-base-uncased and are newly initialized: ['bert.pooler.dense.weight', 'bert.pooler.dense.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+2024-11-13 12:04:17,921 : ***** Transfer task : STS12 *****
+
+
+2024-11-13 12:04:22,361 : MSRpar : pearson = 0.6015, spearman = 0.6148
+2024-11-13 12:04:23,753 : MSRvid : pearson = 0.8558, spearman = 0.8548
+2024-11-13 12:04:24,955 : SMTeuroparl : pearson = 0.5017, spearman = 0.6115
+2024-11-13 12:04:27,290 : surprise.OnWN : pearson = 0.7511, spearman = 0.7036
+2024-11-13 12:04:28,496 : surprise.SMTnews : pearson = 0.6714, spearman = 0.5829
+2024-11-13 12:04:28,498 : ALL : Pearson = 0.7458,             Spearman = 0.6724
+2024-11-13 12:04:28,498 : ALL (weighted average) : Pearson = 0.6932,             Spearman = 0.6895
+2024-11-13 12:04:28,498 : ALL (average) : Pearson = 0.6763,             Spearman = 0.6735
+
+2024-11-13 12:04:28,500 : ***** Transfer task : STS13 (-SMT) *****
+
+
+2024-11-13 12:04:29,781 : FNWN : pearson = 0.6056, spearman = 0.6158
+2024-11-13 12:04:31,488 : headlines : pearson = 0.7813, spearman = 0.7744
+2024-11-13 12:04:32,756 : OnWN : pearson = 0.8464, spearman = 0.8339
+2024-11-13 12:04:32,757 : ALL : Pearson = 0.8033,             Spearman = 0.8088
+2024-11-13 12:04:32,757 : ALL (weighted average) : Pearson = 0.7835,             Spearman = 0.7767
+2024-11-13 12:04:32,757 : ALL (average) : Pearson = 0.7444,             Spearman = 0.7414
+
+2024-11-13 12:04:32,759 : ***** Transfer task : STS14 *****
+
+
+2024-11-13 12:04:34,076 : deft-forum : pearson = 0.5744, spearman = 0.5615
+2024-11-13 12:04:35,513 : deft-news : pearson = 0.7995, spearman = 0.7744
+2024-11-13 12:04:37,694 : headlines : pearson = 0.7646, spearman = 0.7440
+2024-11-13 12:04:39,505 : images : pearson = 0.8306, spearman = 0.8012
+2024-11-13 12:04:41,398 : OnWN : pearson = 0.8589, spearman = 0.8435
+2024-11-13 12:04:43,939 : tweet-news : pearson = 0.7755, spearman = 0.7110
+2024-11-13 12:04:43,941 : ALL : Pearson = 0.7559,             Spearman = 0.7259
+2024-11-13 12:04:43,941 : ALL (weighted average) : Pearson = 0.7788,             Spearman = 0.7493
+2024-11-13 12:04:43,941 : ALL (average) : Pearson = 0.7673,             Spearman = 0.7393
+
+2024-11-13 12:04:43,944 : ***** Transfer task : STS15 *****
+
+
+2024-11-13 12:04:45,762 : answers-forums : pearson = 0.7552, spearman = 0.7601
+2024-11-13 12:04:47,982 : answers-students : pearson = 0.7420, spearman = 0.7447
+2024-11-13 12:04:49,861 : belief : pearson = 0.8132, spearman = 0.8297
+2024-11-13 12:04:51,876 : headlines : pearson = 0.7998, spearman = 0.8045
+2024-11-13 12:04:53,813 : images : pearson = 0.8551, spearman = 0.8714
+2024-11-13 12:04:53,815 : ALL : Pearson = 0.7931,             Spearman = 0.8017
+2024-11-13 12:04:53,816 : ALL (weighted average) : Pearson = 0.7953,             Spearman = 0.8039
+2024-11-13 12:04:53,816 : ALL (average) : Pearson = 0.7930,             Spearman = 0.8021
+
+2024-11-13 12:04:53,818 : ***** Transfer task : STS16 *****
+
+
+2024-11-13 12:04:54,665 : answer-answer : pearson = 0.6881, spearman = 0.6850
+2024-11-13 12:04:55,268 : headlines : pearson = 0.7726, spearman = 0.7888
+2024-11-13 12:04:56,058 : plagiarism : pearson = 0.8057, spearman = 0.8140
+2024-11-13 12:04:57,438 : postediting : pearson = 0.8727, spearman = 0.8883
+2024-11-13 12:04:57,989 : question-question : pearson = 0.6932, spearman = 0.6877
+2024-11-13 12:04:57,990 : ALL : Pearson = 0.7498,             Spearman = 0.7583
+2024-11-13 12:04:57,991 : ALL (weighted average) : Pearson = 0.7675,             Spearman = 0.7741
+2024-11-13 12:04:57,991 : ALL (average) : Pearson = 0.7664,             Spearman = 0.7727
+
+2024-11-13 12:04:57,991 :
+
+***** Transfer task : STSBenchmark*****
+
+
+2024-11-13 12:05:19,555 : train : pearson = 0.7861, spearman = 0.7641
+2024-11-13 12:05:25,916 : dev : pearson = 0.8049, spearman = 0.8090
+2024-11-13 12:05:31,315 : test : pearson = 0.7673, spearman = 0.7561
+2024-11-13 12:05:31,318 : ALL : Pearson = 0.7866,             Spearman = 0.7747
+2024-11-13 12:05:31,319 : ALL (weighted average) : Pearson = 0.7863,             Spearman = 0.7706
+2024-11-13 12:05:31,319 : ALL (average) : Pearson = 0.7861,             Spearman = 0.7764
+
+2024-11-13 12:05:31,324 :
+
+***** Transfer task : SICKRelatedness*****
+
+
+2024-11-13 12:05:44,960 : train : pearson = 0.7931, spearman = 0.7189
+2024-11-13 12:05:46,721 : dev : pearson = 0.7820, spearman = 0.7414
+2024-11-13 12:06:07,136 : test : pearson = 0.7873, spearman = 0.7143
+2024-11-13 12:06:07,140 : ALL : Pearson = 0.7897,             Spearman = 0.7176
+2024-11-13 12:06:07,140 : ALL (weighted average) : Pearson = 0.7896,             Spearman = 0.7177
+2024-11-13 12:06:07,142 : ALL (average) : Pearson = 0.7874,             Spearman = 0.7249
+
+------ test ------
++-------+-------+-------+-------+-------+--------------+-----------------+-------+
+| STS12 | STS13 | STS14 | STS15 | STS16 | STSBenchmark | SICKRelatedness |  Avg. |
++-------+-------+-------+-------+-------+--------------+-----------------+-------+
+| 67.24 | 80.88 | 72.59 | 80.17 | 75.83 |    75.61     |      71.43      | 74.82 |
++-------+-------+-------+-------+-------+--------------+-----------------+-------+
++------+------+------+------+------+------+------+------+
+|  MR  |  CR  | SUBJ | MPQA | SST2 | TREC | MRPC | Avg. |
++------+------+------+------+------+------+------+------+
+| 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
++------+------+------+------+------+------+------+------+
+
+(myenv) C:\Users\moham\OneDrive\Desktop\NLP\SimCSE>
+
+python evaluation.py --model_name_or_path result/exp1 --pooler cls --task_set sts --mode test
+python evaluation.py --model_name_or_path result/exp2 --pooler cls --task_set sts --mode test
+python evaluation.py --model_name_or_path result/exp3 --pooler cls --task_set sts --mode test

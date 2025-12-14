@@ -1,0 +1,512 @@
+  (myenv) C:\Users\moham\OneDrive\Desktop\NLP\SimCSE>python train.py --model_name_or_path bert-base-uncased --train_file data/nli_for_simcse.csv --output_dir result/my-sup-simcse-bert-base-uncased --num_train_epochs 3 --per_device_train_batch_size 128 --learning_rate 5e-5 --max_seq_length 32 --evaluation_strategy steps --metric_for_best_model stsb_spearman --load_best_model_at_end --eval_steps 125 --pooler_type cls --overwrite_output_dir --temp 0.05 --do_train --do_eval --fp16
+11/18/2024 20:04:16 - INFO - __main__ -   PyTorch: setting up devices
+11/18/2024 20:04:16 - WARNING - __main__ -   Process rank: -1, device: cuda:0, n_gpu: 1 distributed training: False, 16-bits training: True
+11/18/2024 20:04:16 - INFO - __main__ -   Training/evaluation parameters OurTrainingArguments(output_dir='result/my-sup-simcse-bert-base-uncased', overwrite_output_dir=True, do_train=True, do_eval=True, do_predict=False, evaluation_strategy=<EvaluationStrategy.STEPS: 'steps'>, prediction_loss_only=False, per_device_train_batch_size=128, per_device_eval_batch_size=8, per_gpu_train_batch_size=None, per_gpu_eval_batch_size=None, gradient_accumulation_steps=1, eval_accumulation_steps=None, learning_rate=5e-05, weight_decay=0.0, adam_beta1=0.9, adam_beta2=0.999, adam_epsilon=1e-08, max_grad_norm=1.0, num_train_epochs=3.0, max_steps=-1, lr_scheduler_type=<SchedulerType.LINEAR: 'linear'>, warmup_steps=0, logging_dir='runs\\Nov18_20-04-16_LAPTOP-EKA500FC', logging_first_step=False, logging_steps=500, save_steps=500, save_total_limit=None, no_cuda=False, seed=42, fp16=True, fp16_opt_level='O1', fp16_backend='auto', local_rank=-1, tpu_num_cores=None, tpu_metrics_debug=False, debug=False, dataloader_drop_last=False, eval_steps=125, dataloader_num_workers=0, past_index=-1, run_name='result/my-sup-simcse-bert-base-uncased', disable_tqdm=False, remove_unused_columns=True, label_names=None, load_best_model_at_end=True, metric_for_best_model='stsb_spearman', greater_is_better=True, ignore_data_skip=False, sharded_ddp=False, deepspeed=None, label_smoothing_factor=0.0, adafactor=False, eval_transfer=False)
+Generating train split: 10000 examples [00:00, 140518.35 examples/s]
+[INFO|configuration_utils.py:445] 2024-11-18 20:04:18,039 >> loading configuration file https://huggingface.co/bert-base-uncased/resolve/main/config.json from cache at C:\Users\moham/.cache\huggingface\transformers\3c61d016573b14f7f008c02c4e51a366c67ab274726fe2910691e2a761acf43e.37395cee442ab11005bcd270f3c34464dc1704b715b5d7d52b1a461abe3b9e4e
+[INFO|configuration_utils.py:481] 2024-11-18 20:04:18,040 >> Model config BertConfig {
+  "architectures": [
+    "BertForMaskedLM"
+  ],
+  "attention_probs_dropout_prob": 0.1,
+  "gradient_checkpointing": false,
+  "hidden_act": "gelu",
+  "hidden_dropout_prob": 0.1,
+  "hidden_size": 768,
+  "initializer_range": 0.02,
+  "intermediate_size": 3072,
+  "layer_norm_eps": 1e-12,
+  "max_position_embeddings": 512,
+  "model_type": "bert",
+  "num_attention_heads": 12,
+  "num_hidden_layers": 12,
+  "pad_token_id": 0,
+  "position_embedding_type": "absolute",
+  "transformers_version": "4.2.1",
+  "type_vocab_size": 2,
+  "use_cache": true,
+  "vocab_size": 30522
+}
+
+[INFO|configuration_utils.py:445] 2024-11-18 20:04:19,172 >> loading configuration file https://huggingface.co/bert-base-uncased/resolve/main/config.json from cache at C:\Users\moham/.cache\huggingface\transformers\3c61d016573b14f7f008c02c4e51a366c67ab274726fe2910691e2a761acf43e.37395cee442ab11005bcd270f3c34464dc1704b715b5d7d52b1a461abe3b9e4e
+[INFO|configuration_utils.py:481] 2024-11-18 20:04:19,172 >> Model config BertConfig {
+  "architectures": [
+    "BertForMaskedLM"
+  ],
+  "attention_probs_dropout_prob": 0.1,
+  "gradient_checkpointing": false,
+  "hidden_act": "gelu",
+  "hidden_dropout_prob": 0.1,
+  "hidden_size": 768,
+  "initializer_range": 0.02,
+  "intermediate_size": 3072,
+  "layer_norm_eps": 1e-12,
+  "max_position_embeddings": 512,
+  "model_type": "bert",
+  "num_attention_heads": 12,
+  "num_hidden_layers": 12,
+  "pad_token_id": 0,
+  "position_embedding_type": "absolute",
+  "transformers_version": "4.2.1",
+  "type_vocab_size": 2,
+  "use_cache": true,
+  "vocab_size": 30522
+}
+
+[INFO|tokenization_utils_base.py:1766] 2024-11-18 20:04:20,281 >> loading file https://huggingface.co/bert-base-uncased/resolve/main/vocab.txt from cache at C:\Users\moham/.cache\huggingface\transformers\45c3f7a79a80e1cf0a489e5c62b43f173c15db47864303a55d623bb3c96f72a5.d789d64ebfe299b0e416afc4a169632f903f693095b4629a7ea271d5a0cf2c99
+[INFO|tokenization_utils_base.py:1766] 2024-11-18 20:04:20,281 >> loading file https://huggingface.co/bert-base-uncased/resolve/main/tokenizer.json from cache at C:\Users\moham/.cache\huggingface\transformers\534479488c54aeaf9c3406f647aa2ec13648c06771ffe269edabebd4c412da1d.7f2721073f19841be16f41b0a70b600ca6b880c8f3df6f3535cbc704371bdfa4
+[INFO|modeling_utils.py:1027] 2024-11-18 20:04:20,659 >> loading weights file https://huggingface.co/bert-base-uncased/resolve/main/pytorch_model.bin from cache at C:\Users\moham/.cache\huggingface\transformers\a8041bf617d7f94ea26d15e218abd04afc2004805632abc0ed2066aa16d50d04.faf6ea826ae9c5867d12b22257f9877e6b8367890837bd60f7c54a29633f7f2f
+[WARNING|modeling_utils.py:1134] 2024-11-18 20:04:24,970 >> Some weights of the model checkpoint at bert-base-uncased were not used when initializing BertForCL: ['cls.predictions.bias', 'cls.predictions.transform.dense.weight', 'cls.predictions.transform.dense.bias', 'cls.predictions.decoder.weight', 'cls.seq_relationship.weight', 'cls.seq_relationship.bias', 'cls.predictions.transform.LayerNorm.weight', 'cls.predictions.transform.LayerNorm.bias', 'bert.pooler.dense.weight', 'bert.pooler.dense.bias']
+- This IS expected if you are initializing BertForCL from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing BertForCL from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+[WARNING|modeling_utils.py:1145] 2024-11-18 20:04:24,971 >> Some weights of BertForCL were not initialized from the model checkpoint at bert-base-uncased and are newly initialized: ['mlp.dense.weight', 'mlp.dense.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+Map: 100%|████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 10000/10000 [00:02<00:00, 4851.22 examples/s]
+[INFO|trainer.py:441] 2024-11-18 20:04:34,280 >> The following columns in the training set don't have a corresponding argument in `BertForCL.forward` and have been ignored: .
+[INFO|trainer.py:358] 2024-11-18 20:04:34,282 >> Using amp fp16 backend
+11/18/2024 20:04:34 - INFO - simcse.trainers -   ***** Running training *****
+11/18/2024 20:04:34 - INFO - simcse.trainers -     Num examples = 10000
+11/18/2024 20:04:34 - INFO - simcse.trainers -     Num Epochs = 3
+11/18/2024 20:04:34 - INFO - simcse.trainers -     Instantaneous batch size per device = 128
+11/18/2024 20:04:34 - INFO - simcse.trainers -     Total train batch size (w. parallel, distributed & accumulation) = 128
+11/18/2024 20:04:34 - INFO - simcse.trainers -     Gradient Accumulation steps = 1
+11/18/2024 20:04:34 - INFO - simcse.trainers -     Total optimization steps = 237
+  0%|                                                                                                                                                                                    | 0/237 [00:00<?, ?it/s]C:\Users\moham\OneDrive\Desktop\NLP\SimCSE\myenv\lib\site-packages\torch\optim\lr_scheduler.py:131: UserWarning: Detected call of `lr_scheduler.step()` before `optimizer.step()`. In PyTorch 1.1.0 and later, you should call them in the opposite order: `optimizer.step()` before `lr_scheduler.step()`.  Failure to do this will result in PyTorch skipping the first value of the learning rate schedule. See more details at https://pytorch.org/docs/stable/optim.html#how-to-adjust-learning-rate
+  warnings.warn("Detected call of `lr_scheduler.step()` before `optimizer.step()`. "
+{'eval_stsb_spearman': 0.824039227355656, 'eval_sickr_spearman': 0.8028492266028334, 'eval_avg_sts': 0.8134442269792448, 'epoch': 1.58}
+ 53%|█████████████████████████████████████████████████████████████████████████████████████████▋                                                                                | 125/237 [28:57<33:26, 17.92s/it][INFO|trainer.py:1344] 2024-11-18 20:33:31,957 >> Saving model checkpoint to result/my-sup-simcse-bert-base-uncased
+[INFO|configuration_utils.py:300] 2024-11-18 20:33:31,964 >> Configuration saved in result/my-sup-simcse-bert-base-uncased\config.json
+[INFO|modeling_utils.py:817] 2024-11-18 20:33:33,314 >> Model weights saved in result/my-sup-simcse-bert-base-uncased\pytorch_model.bin
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 237/237 [52:18<00:00,  7.27s/it]11/18/2024 20:56:52 - INFO - simcse.trainers -
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+11/18/2024 20:56:52 - INFO - simcse.trainers -   Loading best model from result/my-sup-simcse-bert-base-uncased (score: 0.824039227355656).
+[INFO|configuration_utils.py:443] 2024-11-18 20:56:52,469 >> loading configuration file result/my-sup-simcse-bert-base-uncased\config.json
+[INFO|configuration_utils.py:481] 2024-11-18 20:56:52,471 >> Model config BertConfig {
+  "_name_or_path": "bert-base-uncased",
+  "architectures": [
+    "BertForCL"
+  ],
+  "attention_probs_dropout_prob": 0.1,
+  "gradient_checkpointing": false,
+  "hidden_act": "gelu",
+  "hidden_dropout_prob": 0.1,
+  "hidden_size": 768,
+  "initializer_range": 0.02,
+  "intermediate_size": 3072,
+  "layer_norm_eps": 1e-12,
+  "max_position_embeddings": 512,
+  "model_type": "bert",
+  "num_attention_heads": 12,
+  "num_hidden_layers": 12,
+  "pad_token_id": 0,
+  "position_embedding_type": "absolute",
+  "transformers_version": "4.2.1",
+  "type_vocab_size": 2,
+  "use_cache": true,
+  "vocab_size": 30522
+}
+
+[INFO|modeling_utils.py:1025] 2024-11-18 20:56:52,473 >> loading weights file result/my-sup-simcse-bert-base-uncased\pytorch_model.bin
+[INFO|modeling_utils.py:1143] 2024-11-18 20:56:55,860 >> All model checkpoint weights were used when initializing BertForCL.
+
+[INFO|modeling_utils.py:1151] 2024-11-18 20:56:55,860 >> All the weights of BertForCL were initialized from the model checkpoint at result/my-sup-simcse-bert-base-uncased.
+If your task is similar to the task the model of the checkpoint was trained on, you can already use BertForCL for predictions without further training.
+{'train_runtime': 3141.7481, 'train_samples_per_second': 0.075, 'epoch': 3.0}
+100%|██████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████| 237/237 [52:21<00:00, 13.26s/it]
+[INFO|trainer.py:1344] 2024-11-18 20:56:56,047 >> Saving model checkpoint to result/my-sup-simcse-bert-base-uncased
+[INFO|configuration_utils.py:300] 2024-11-18 20:56:56,051 >> Configuration saved in result/my-sup-simcse-bert-base-uncased\config.json
+[INFO|modeling_utils.py:817] 2024-11-18 20:56:57,256 >> Model weights saved in result/my-sup-simcse-bert-base-uncased\pytorch_model.bin
+11/18/2024 20:56:57 - INFO - __main__ -   ***** Train results *****
+11/18/2024 20:56:57 - INFO - __main__ -     epoch = 3.0
+11/18/2024 20:56:57 - INFO - __main__ -     train_runtime = 3141.7481
+11/18/2024 20:56:57 - INFO - __main__ -     train_samples_per_second = 0.075
+11/18/2024 20:56:57 - INFO - __main__ -   *** Evaluate ***
+11/18/2024 20:59:31 - INFO - root -   Generating sentence embeddings
+11/18/2024 21:01:07 - INFO - root -   Generated sentence embeddings
+11/18/2024 21:01:07 - INFO - root -   Training pytorch-MLP-nhid0-rmsprop-bs128 with (inner) 5-fold cross-validation
+11/18/2024 21:01:36 - INFO - root -   Best param found at split 1: l2reg = 1e-05                 with score 82.07
+11/18/2024 21:02:06 - INFO - root -   Best param found at split 2: l2reg = 0.0001                 with score 81.77
+11/18/2024 21:02:33 - INFO - root -   Best param found at split 3: l2reg = 0.0001                 with score 81.4
+11/18/2024 21:03:01 - INFO - root -   Best param found at split 4: l2reg = 1e-05                 with score 81.55
+11/18/2024 21:03:31 - INFO - root -   Best param found at split 5: l2reg = 0.001                 with score 81.42
+11/18/2024 21:03:33 - INFO - root -   Generating sentence embeddings
+11/18/2024 21:03:45 - INFO - root -   Generated sentence embeddings
+11/18/2024 21:03:45 - INFO - root -   Training pytorch-MLP-nhid0-rmsprop-bs128 with (inner) 5-fold cross-validation
+11/18/2024 21:03:53 - INFO - root -   Best param found at split 1: l2reg = 1e-05                 with score 88.41
+11/18/2024 21:04:04 - INFO - root -   Best param found at split 2: l2reg = 0.001                 with score 88.31
+11/18/2024 21:04:14 - INFO - root -   Best param found at split 3: l2reg = 0.0001                 with score 87.98
+11/18/2024 21:04:24 - INFO - root -   Best param found at split 4: l2reg = 1e-05                 with score 87.42
+11/18/2024 21:04:35 - INFO - root -   Best param found at split 5: l2reg = 0.001                 with score 88.05
+11/18/2024 21:04:36 - INFO - root -   Generating sentence embeddings
+11/18/2024 21:05:29 - INFO - root -   Generated sentence embeddings
+11/18/2024 21:05:29 - INFO - root -   Training pytorch-MLP-nhid0-rmsprop-bs128 with (inner) 5-fold cross-validation
+11/18/2024 21:05:55 - INFO - root -   Best param found at split 1: l2reg = 0.0001                 with score 94.26
+11/18/2024 21:06:26 - INFO - root -   Best param found at split 2: l2reg = 1e-05                 with score 94.64
+11/18/2024 21:06:54 - INFO - root -   Best param found at split 3: l2reg = 1e-05                 with score 94.42
+11/18/2024 21:07:21 - INFO - root -   Best param found at split 4: l2reg = 1e-05                 with score 94.4
+11/18/2024 21:07:50 - INFO - root -   Best param found at split 5: l2reg = 0.0001                 with score 94.29
+11/18/2024 21:07:51 - INFO - root -   Generating sentence embeddings
+11/18/2024 21:07:59 - INFO - root -   Generated sentence embeddings
+11/18/2024 21:07:59 - INFO - root -   Training pytorch-MLP-nhid0-rmsprop-bs128 with (inner) 5-fold cross-validation
+11/18/2024 21:08:22 - INFO - root -   Best param found at split 1: l2reg = 1e-05                 with score 88.22
+11/18/2024 21:08:50 - INFO - root -   Best param found at split 2: l2reg = 1e-05                 with score 88.56
+11/18/2024 21:09:16 - INFO - root -   Best param found at split 3: l2reg = 0.001                 with score 88.14
+11/18/2024 21:09:45 - INFO - root -   Best param found at split 4: l2reg = 1e-05                 with score 88.7
+11/18/2024 21:10:15 - INFO - root -   Best param found at split 5: l2reg = 0.0001                 with score 89.02
+11/18/2024 21:10:16 - INFO - root -   Computing embedding for train
+11/18/2024 21:13:25 - INFO - root -   Computed train embeddings
+11/18/2024 21:13:25 - INFO - root -   Computing embedding for dev
+11/18/2024 21:13:33 - INFO - root -   Computed dev embeddings
+11/18/2024 21:13:33 - INFO - root -   Computing embedding for test
+11/18/2024 21:13:45 - INFO - root -   Computed test embeddings
+11/18/2024 21:13:45 - INFO - root -   Training pytorch-MLP-nhid0-rmsprop-bs128 with standard validation..
+11/18/2024 21:14:32 - INFO - root -   [('reg:1e-05', 86.24), ('reg:0.0001', 86.58), ('reg:0.001', 86.93), ('reg:0.01', 86.12)]
+11/18/2024 21:14:32 - INFO - root -   Validation : best param found is reg = 0.001 with score             86.93
+11/18/2024 21:14:32 - INFO - root -   Evaluating...
+11/18/2024 21:14:44 - INFO - root -   ***** Transfer task : TREC *****
+
+
+11/18/2024 21:14:55 - INFO - root -   Computed train embeddings
+11/18/2024 21:14:55 - INFO - root -   Computed test embeddings
+11/18/2024 21:14:55 - INFO - root -   Training pytorch-MLP-nhid0-rmsprop-bs128 with 5-fold cross-validation
+11/18/2024 21:15:15 - INFO - root -   [('reg:1e-05', 81.69), ('reg:0.0001', 81.38), ('reg:0.001', 79.57), ('reg:0.01', 73.11)]
+11/18/2024 21:15:15 - INFO - root -   Cross-validation : best param found is reg = 1e-05             with score 81.69
+11/18/2024 21:15:15 - INFO - root -   Evaluating...
+11/18/2024 21:15:17 - INFO - root -   ***** Transfer task : MRPC *****
+
+
+11/18/2024 21:15:17 - INFO - root -   Computing embedding for train
+11/18/2024 21:15:56 - INFO - root -   Computed train embeddings
+11/18/2024 21:15:56 - INFO - root -   Computing embedding for test
+11/18/2024 21:16:15 - INFO - root -   Computed test embeddings
+11/18/2024 21:16:15 - INFO - root -   Training pytorch-MLP-nhid0-rmsprop-bs128 with 5-fold cross-validation
+11/18/2024 21:16:29 - INFO - root -   [('reg:1e-05', 73.48), ('reg:0.0001', 73.5), ('reg:0.001', 73.31), ('reg:0.01', 73.31)]
+11/18/2024 21:16:29 - INFO - root -   Cross-validation : best param found is reg = 0.0001             with score 73.5
+11/18/2024 21:16:29 - INFO - root -   Evaluating...
+11/18/2024 21:16:30 - INFO - __main__ -   ***** Eval results *****
+11/18/2024 21:16:30 - INFO - __main__ -     epoch = 3.0
+11/18/2024 21:16:30 - INFO - __main__ -     eval_CR = 88.03
+11/18/2024 21:16:30 - INFO - __main__ -     eval_MPQA = 88.53
+11/18/2024 21:16:30 - INFO - __main__ -     eval_MR = 81.64
+11/18/2024 21:16:30 - INFO - __main__ -     eval_MRPC = 73.5
+11/18/2024 21:16:30 - INFO - __main__ -     eval_SST2 = 86.93
+11/18/2024 21:16:30 - INFO - __main__ -     eval_SUBJ = 94.4
+11/18/2024 21:16:30 - INFO - __main__ -     eval_TREC = 81.69
+11/18/2024 21:16:30 - INFO - __main__ -     eval_avg_sts = 0.8134442269792448
+11/18/2024 21:16:30 - INFO - __main__ -     eval_avg_transfer = 84.96000000000001
+11/18/2024 21:16:30 - INFO - __main__ -     eval_sickr_spearman = 0.8028492266028334
+11/18/2024 21:16:30 - INFO - __main__ -     eval_stsb_spearman = 0.824039227355656
+
+(myenv) C:\Users\moham\OneDrive\Desktop\NLP\SimCSE>python evaluation.py --model_name_or_path result/my-sup-simcse-bert-base-uncased --pooler cls --task_set sts --mode test
+Some weights of BertModel were not initialized from the model checkpoint at result/my-sup-simcse-bert-base-uncased and are newly initialized: ['bert.pooler.dense.weight', 'bert.pooler.dense.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+2024-11-19 00:51:15,151 : ***** Transfer task : STS12 *****
+
+
+2024-11-19 00:51:19,775 : MSRpar : pearson = 0.4692, spearman = 0.4995
+2024-11-19 00:51:21,152 : MSRvid : pearson = 0.9145, spearman = 0.9221
+2024-11-19 00:51:22,351 : SMTeuroparl : pearson = 0.5553, spearman = 0.6123
+2024-11-19 00:51:24,690 : surprise.OnWN : pearson = 0.7288, spearman = 0.6761
+2024-11-19 00:51:25,910 : surprise.SMTnews : pearson = 0.6762, spearman = 0.5803
+2024-11-19 00:51:25,911 : ALL : Pearson = 0.8272,             Spearman = 0.7328
+2024-11-19 00:51:25,911 : ALL (weighted average) : Pearson = 0.6786,             Spearman = 0.6711
+2024-11-19 00:51:25,912 : ALL (average) : Pearson = 0.6688,             Spearman = 0.6581
+
+2024-11-19 00:51:25,914 : ***** Transfer task : STS13 (-SMT) *****
+
+
+2024-11-19 00:51:27,182 : FNWN : pearson = 0.6500, spearman = 0.6575
+2024-11-19 00:51:28,796 : headlines : pearson = 0.7362, spearman = 0.7463
+2024-11-19 00:51:30,053 : OnWN : pearson = 0.8578, spearman = 0.8451
+2024-11-19 00:51:30,054 : ALL : Pearson = 0.7936,             Spearman = 0.8091
+2024-11-19 00:51:30,054 : ALL (weighted average) : Pearson = 0.7708,             Spearman = 0.7721
+2024-11-19 00:51:30,054 : ALL (average) : Pearson = 0.7480,             Spearman = 0.7496
+
+2024-11-19 00:51:30,055 : ***** Transfer task : STS14 *****
+
+
+2024-11-19 00:51:31,468 : deft-forum : pearson = 0.5795, spearman = 0.5660
+2024-11-19 00:51:32,907 : deft-news : pearson = 0.7967, spearman = 0.7619
+2024-11-19 00:51:34,778 : headlines : pearson = 0.7162, spearman = 0.6784
+2024-11-19 00:51:36,570 : images : pearson = 0.8760, spearman = 0.8359
+2024-11-19 00:51:38,422 : OnWN : pearson = 0.8751, spearman = 0.8597
+2024-11-19 00:51:40,958 : tweet-news : pearson = 0.7595, spearman = 0.6812
+2024-11-19 00:51:40,959 : ALL : Pearson = 0.7762,             Spearman = 0.7369
+2024-11-19 00:51:40,959 : ALL (weighted average) : Pearson = 0.7786,             Spearman = 0.7399
+2024-11-19 00:51:40,959 : ALL (average) : Pearson = 0.7672,             Spearman = 0.7305
+
+2024-11-19 00:51:40,961 : ***** Transfer task : STS15 *****
+
+
+2024-11-19 00:51:42,834 : answers-forums : pearson = 0.6963, spearman = 0.7035
+2024-11-19 00:51:44,641 : answers-students : pearson = 0.6489, spearman = 0.6436
+2024-11-19 00:51:46,512 : belief : pearson = 0.8075, spearman = 0.8370
+2024-11-19 00:51:48,490 : headlines : pearson = 0.7758, spearman = 0.7767
+2024-11-19 00:51:50,382 : images : pearson = 0.9115, spearman = 0.9232
+2024-11-19 00:51:50,384 : ALL : Pearson = 0.7892,             Spearman = 0.8040
+2024-11-19 00:51:50,384 : ALL (weighted average) : Pearson = 0.7720,             Spearman = 0.7784
+2024-11-19 00:51:50,384 : ALL (average) : Pearson = 0.7680,             Spearman = 0.7768
+
+2024-11-19 00:51:50,386 : ***** Transfer task : STS16 *****
+
+
+2024-11-19 00:51:51,300 : answer-answer : pearson = 0.7285, spearman = 0.7407
+2024-11-19 00:51:51,937 : headlines : pearson = 0.7486, spearman = 0.7666
+2024-11-19 00:51:52,734 : plagiarism : pearson = 0.7994, spearman = 0.8291
+2024-11-19 00:51:54,097 : postediting : pearson = 0.8341, spearman = 0.8651
+2024-11-19 00:51:54,666 : question-question : pearson = 0.7123, spearman = 0.7274
+2024-11-19 00:51:54,667 : ALL : Pearson = 0.7603,             Spearman = 0.7847
+2024-11-19 00:51:54,668 : ALL (weighted average) : Pearson = 0.7653,             Spearman = 0.7865
+2024-11-19 00:51:54,668 : ALL (average) : Pearson = 0.7646,             Spearman = 0.7858
+
+2024-11-19 00:51:54,669 :
+
+***** Transfer task : STSBenchmark*****
+
+
+2024-11-19 00:52:16,150 : train : pearson = 0.7884, spearman = 0.7673
+2024-11-19 00:52:22,327 : dev : pearson = 0.8129, spearman = 0.8260
+2024-11-19 00:52:27,620 : test : pearson = 0.7847, spearman = 0.7953
+2024-11-19 00:52:27,624 : ALL : Pearson = 0.7938,             Spearman = 0.7863
+2024-11-19 00:52:27,624 : ALL (weighted average) : Pearson = 0.7921,             Spearman = 0.7820
+2024-11-19 00:52:27,624 : ALL (average) : Pearson = 0.7953,             Spearman = 0.7962
+
+2024-11-19 00:52:27,629 :
+
+***** Transfer task : SICKRelatedness*****
+
+
+2024-11-19 00:52:41,316 : train : pearson = 0.8413, spearman = 0.7817
+2024-11-19 00:52:43,090 : dev : pearson = 0.8416, spearman = 0.8002
+2024-11-19 00:52:58,487 : test : pearson = 0.8391, spearman = 0.7815
+2024-11-19 00:52:58,492 : ALL : Pearson = 0.8402,             Spearman = 0.7826
+2024-11-19 00:52:58,492 : ALL (weighted average) : Pearson = 0.8402,             Spearman = 0.7825
+2024-11-19 00:52:58,492 : ALL (average) : Pearson = 0.8407,             Spearman = 0.7878
+
+------ test ------
++-------+-------+-------+-------+-------+--------------+-----------------+-------+
+| STS12 | STS13 | STS14 | STS15 | STS16 | STSBenchmark | SICKRelatedness |  Avg. |
++-------+-------+-------+-------+-------+--------------+-----------------+-------+
+| 73.28 | 80.91 | 73.69 | 80.40 | 78.47 |    79.53     |      78.15      | 77.78 |
++-------+-------+-------+-------+-------+--------------+-----------------+-------+
++------+------+------+------+------+------+------+------+
+|  MR  |  CR  | SUBJ | MPQA | SST2 | TREC | MRPC | Avg. |
++------+------+------+------+------+------+------+------+
+| 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 | 0.00 |
++------+------+------+------+------+------+------+------+
+
+(myenv) C:\Users\moham\OneDrive\Desktop\NLP\SimCSE>
+
+(myenv) C:\Users\moham\OneDrive\Desktop\NLP\SimCSE>python evaluation.py --model_name_or_path result/my-sup-simcse-bert-base-uncased --pooler cls --task_set full --mode test
+Some weights of BertModel were not initialized from the model checkpoint at result/my-sup-simcse-bert-base-uncased and are newly initialized: ['bert.pooler.dense.weight', 'bert.pooler.dense.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.
+2024-11-19 01:19:46,262 : ***** Transfer task : STS12 *****
+
+
+2024-11-19 01:19:51,232 : MSRpar : pearson = 0.4752, spearman = 0.5090
+2024-11-19 01:19:52,817 : MSRvid : pearson = 0.9142, spearman = 0.9216
+2024-11-19 01:19:54,152 : SMTeuroparl : pearson = 0.5668, spearman = 0.6172
+2024-11-19 01:19:56,947 : surprise.OnWN : pearson = 0.7307, spearman = 0.6778
+2024-11-19 01:19:58,346 : surprise.SMTnews : pearson = 0.6639, spearman = 0.5586
+2024-11-19 01:19:58,348 : ALL : Pearson = 0.8277,             Spearman = 0.7326
+2024-11-19 01:19:58,349 : ALL (weighted average) : Pearson = 0.6805,             Spearman = 0.6717
+2024-11-19 01:19:58,349 : ALL (average) : Pearson = 0.6701,             Spearman = 0.6569
+
+2024-11-19 01:19:58,351 : ***** Transfer task : STS13 (-SMT) *****
+
+
+2024-11-19 01:19:59,722 : FNWN : pearson = 0.6363, spearman = 0.6479
+2024-11-19 01:20:01,581 : headlines : pearson = 0.7394, spearman = 0.7460
+2024-11-19 01:20:03,016 : OnWN : pearson = 0.8542, spearman = 0.8414
+2024-11-19 01:20:03,018 : ALL : Pearson = 0.7930,             Spearman = 0.8061
+2024-11-19 01:20:03,018 : ALL (weighted average) : Pearson = 0.7694,             Spearman = 0.7693
+2024-11-19 01:20:03,018 : ALL (average) : Pearson = 0.7433,             Spearman = 0.7451
+
+2024-11-19 01:20:03,019 : ***** Transfer task : STS14 *****
+
+
+2024-11-19 01:20:04,505 : deft-forum : pearson = 0.5814, spearman = 0.5701
+2024-11-19 01:20:06,131 : deft-news : pearson = 0.7961, spearman = 0.7574
+2024-11-19 01:20:08,272 : headlines : pearson = 0.7134, spearman = 0.6745
+2024-11-19 01:20:10,304 : images : pearson = 0.8711, spearman = 0.8327
+2024-11-19 01:20:12,420 : OnWN : pearson = 0.8772, spearman = 0.8607
+2024-11-19 01:20:15,298 : tweet-news : pearson = 0.7589, spearman = 0.6797
+2024-11-19 01:20:15,300 : ALL : Pearson = 0.7737,             Spearman = 0.7339
+2024-11-19 01:20:15,301 : ALL (weighted average) : Pearson = 0.7776,             Spearman = 0.7385
+2024-11-19 01:20:15,301 : ALL (average) : Pearson = 0.7664,             Spearman = 0.7292
+
+2024-11-19 01:20:15,304 : ***** Transfer task : STS15 *****
+
+
+2024-11-19 01:20:17,327 : answers-forums : pearson = 0.6962, spearman = 0.7034
+2024-11-19 01:20:19,483 : answers-students : pearson = 0.6649, spearman = 0.6588
+2024-11-19 01:20:21,600 : belief : pearson = 0.8086, spearman = 0.8359
+2024-11-19 01:20:23,859 : headlines : pearson = 0.7743, spearman = 0.7766
+2024-11-19 01:20:26,144 : images : pearson = 0.9102, spearman = 0.9235
+2024-11-19 01:20:26,146 : ALL : Pearson = 0.7911,             Spearman = 0.8056
+2024-11-19 01:20:26,146 : ALL (weighted average) : Pearson = 0.7755,             Spearman = 0.7821
+2024-11-19 01:20:26,146 : ALL (average) : Pearson = 0.7709,             Spearman = 0.7796
+
+2024-11-19 01:20:26,148 : ***** Transfer task : STS16 *****
+
+
+2024-11-19 01:20:27,095 : answer-answer : pearson = 0.7385, spearman = 0.7445
+2024-11-19 01:20:27,789 : headlines : pearson = 0.7458, spearman = 0.7614
+2024-11-19 01:20:28,701 : plagiarism : pearson = 0.8041, spearman = 0.8328
+2024-11-19 01:20:30,279 : postediting : pearson = 0.8323, spearman = 0.8631
+2024-11-19 01:20:30,999 : question-question : pearson = 0.7077, spearman = 0.7205
+2024-11-19 01:20:31,007 : ALL : Pearson = 0.7629,             Spearman = 0.7845
+2024-11-19 01:20:31,007 : ALL (weighted average) : Pearson = 0.7666,             Spearman = 0.7854
+2024-11-19 01:20:31,008 : ALL (average) : Pearson = 0.7657,             Spearman = 0.7845
+
+2024-11-19 01:20:31,010 :
+
+***** Transfer task : STSBenchmark*****
+
+
+2024-11-19 01:20:56,735 : train : pearson = 0.7856, spearman = 0.7662
+2024-11-19 01:21:03,770 : dev : pearson = 0.8135, spearman = 0.8263
+2024-11-19 01:21:10,546 : test : pearson = 0.7854, spearman = 0.7972
+2024-11-19 01:21:10,553 : ALL : Pearson = 0.7922,             Spearman = 0.7859
+2024-11-19 01:21:10,553 : ALL (weighted average) : Pearson = 0.7904,             Spearman = 0.7816
+2024-11-19 01:21:10,553 : ALL (average) : Pearson = 0.7949,             Spearman = 0.7966
+
+2024-11-19 01:21:10,563 :
+
+***** Transfer task : SICKRelatedness*****
+
+
+2024-11-19 01:21:31,151 : train : pearson = 0.8432, spearman = 0.7842
+2024-11-19 01:21:34,761 : dev : pearson = 0.8412, spearman = 0.8049
+2024-11-19 01:22:01,003 : test : pearson = 0.8391, spearman = 0.7828
+2024-11-19 01:22:01,013 : ALL : Pearson = 0.8411,             Spearman = 0.7846
+2024-11-19 01:22:01,014 : ALL (weighted average) : Pearson = 0.8411,             Spearman = 0.7846
+2024-11-19 01:22:01,014 : ALL (average) : Pearson = 0.8412,             Spearman = 0.7906
+
+2024-11-19 01:22:01,021 : ***** Transfer task : MR *****
+
+
+2024-11-19 01:22:01,401 : Generating sentence embeddings
+2024-11-19 01:23:09,365 : Generated sentence embeddings
+2024-11-19 01:23:09,366 : Training pytorch-MLP-nhid0-adam-bs64 with (inner) 10-fold cross-validation
+2024-11-19 01:31:56,687 : Best param found at split 1: l2reg = 1e-05                 with score 82.39
+2024-11-19 01:39:32,319 : Best param found at split 2: l2reg = 0.001                 with score 82.53
+2024-11-19 01:47:57,428 : Best param found at split 3: l2reg = 0.001                 with score 82.31
+2024-11-19 01:54:16,480 : Best param found at split 4: l2reg = 0.0001                 with score 82.44
+2024-11-19 02:00:26,871 : Best param found at split 5: l2reg = 0.001                 with score 82.42
+2024-11-19 02:06:30,129 : Best param found at split 6: l2reg = 1e-05                 with score 82.37
+2024-11-19 02:13:18,996 : Best param found at split 7: l2reg = 0.001                 with score 82.4
+2024-11-19 02:21:46,841 : Best param found at split 8: l2reg = 0.001                 with score 82.12
+2024-11-19 02:29:49,942 : Best param found at split 9: l2reg = 0.0001                 with score 82.33
+2024-11-19 02:37:56,636 : Best param found at split 10: l2reg = 0.001                 with score 82.25
+2024-11-19 02:38:08,170 : Dev acc : 82.36 Test acc : 81.64
+
+2024-11-19 02:38:08,240 : ***** Transfer task : CR *****
+
+
+2024-11-19 02:38:08,318 : Generating sentence embeddings
+2024-11-19 02:38:16,878 : Generated sentence embeddings
+2024-11-19 02:38:16,879 : Training pytorch-MLP-nhid0-adam-bs64 with (inner) 10-fold cross-validation
+2024-11-19 02:41:00,935 : Best param found at split 1: l2reg = 0.0001                 with score 88.61
+2024-11-19 02:43:46,161 : Best param found at split 2: l2reg = 1e-05                 with score 88.61
+2024-11-19 02:46:34,805 : Best param found at split 3: l2reg = 1e-05                 with score 88.14
+2024-11-19 02:49:05,901 : Best param found at split 4: l2reg = 0.001                 with score 88.49
+2024-11-19 02:51:56,978 : Best param found at split 5: l2reg = 1e-05                 with score 88.61
+2024-11-19 02:54:38,816 : Best param found at split 6: l2reg = 0.001                 with score 88.2
+2024-11-19 02:57:16,051 : Best param found at split 7: l2reg = 1e-05                 with score 88.17
+2024-11-19 02:59:55,895 : Best param found at split 8: l2reg = 0.001                 with score 88.11
+2024-11-19 03:02:34,605 : Best param found at split 9: l2reg = 0.001                 with score 88.35
+2024-11-19 03:05:23,432 : Best param found at split 10: l2reg = 1e-05                 with score 88.26
+2024-11-19 03:05:30,741 : Dev acc : 88.36 Test acc : 87.69
+
+2024-11-19 03:05:30,748 : ***** Transfer task : MPQA *****
+
+
+2024-11-19 03:05:30,873 : Generating sentence embeddings
+2024-11-19 03:05:38,997 : Generated sentence embeddings
+2024-11-19 03:05:38,998 : Training pytorch-MLP-nhid0-adam-bs64 with (inner) 10-fold cross-validation
+2024-11-19 03:14:26,168 : Best param found at split 1: l2reg = 1e-05                 with score 89.86
+2024-11-19 03:22:32,594 : Best param found at split 2: l2reg = 0.001                 with score 89.69
+2024-11-19 03:31:04,053 : Best param found at split 3: l2reg = 0.001                 with score 89.76
+2024-11-19 03:39:34,095 : Best param found at split 4: l2reg = 1e-05                 with score 89.9
+2024-11-19 03:47:05,904 : Best param found at split 5: l2reg = 1e-05                 with score 89.9
+2024-11-19 03:53:58,391 : Best param found at split 6: l2reg = 1e-05                 with score 89.94
+2024-11-19 04:00:29,516 : Best param found at split 7: l2reg = 1e-05                 with score 89.83
+2024-11-19 04:06:43,220 : Best param found at split 8: l2reg = 1e-05                 with score 89.97
+2024-11-19 04:12:40,851 : Best param found at split 9: l2reg = 0.001                 with score 89.86
+2024-11-19 04:18:26,896 : Best param found at split 10: l2reg = 1e-05                 with score 89.75
+2024-11-19 04:18:36,254 : Dev acc : 89.85 Test acc : 89.39
+
+2024-11-19 04:18:36,268 : ***** Transfer task : SUBJ *****
+
+
+2024-11-19 04:18:36,741 : Generating sentence embeddings
+2024-11-19 04:19:04,967 : Generated sentence embeddings
+2024-11-19 04:19:04,967 : Training pytorch-MLP-nhid0-adam-bs64 with (inner) 10-fold cross-validation
+2024-11-19 04:24:41,529 : Best param found at split 1: l2reg = 1e-05                 with score 94.66
+2024-11-19 04:31:15,772 : Best param found at split 2: l2reg = 1e-05                 with score 94.71
+2024-11-19 04:37:34,253 : Best param found at split 3: l2reg = 1e-05                 with score 94.83
+2024-11-19 04:43:22,249 : Best param found at split 4: l2reg = 1e-05                 with score 94.84
+2024-11-19 04:49:12,424 : Best param found at split 5: l2reg = 1e-05                 with score 94.9
+2024-11-19 04:54:50,454 : Best param found at split 6: l2reg = 1e-05                 with score 94.7
+2024-11-19 05:00:36,271 : Best param found at split 7: l2reg = 1e-05                 with score 94.87
+2024-11-19 05:06:12,294 : Best param found at split 8: l2reg = 1e-05                 with score 94.73
+2024-11-19 05:11:35,928 : Best param found at split 9: l2reg = 0.0001                 with score 94.83
+2024-11-19 05:16:47,267 : Best param found at split 10: l2reg = 1e-05                 with score 94.53
+2024-11-19 05:16:55,417 : Dev acc : 94.76 Test acc : 94.32
+
+2024-11-19 05:16:55,431 : ***** Transfer task : SST Binary classification *****
+
+
+2024-11-19 05:16:55,668 : Computing embedding for train
+2024-11-19 05:18:25,204 : Computed train embeddings
+2024-11-19 05:18:25,204 : Computing embedding for dev
+2024-11-19 05:18:27,232 : Computed dev embeddings
+2024-11-19 05:18:27,232 : Computing embedding for test
+2024-11-19 05:18:31,493 : Computed test embeddings
+2024-11-19 05:18:31,494 : Training pytorch-MLP-nhid0-adam-bs64 with standard validation..
+2024-11-19 05:22:31,000 : [('reg:1e-05', 87.39), ('reg:0.0001', 87.39), ('reg:0.001', 87.27), ('reg:0.01', 86.12)]
+2024-11-19 05:22:31,000 : Validation : best param found is reg = 1e-05 with score             87.39
+2024-11-19 05:22:31,000 : Evaluating...
+2024-11-19 05:23:29,804 :
+Dev acc : 87.39 Test acc : 86.49 for             SST Binary classification
+
+2024-11-19 05:23:29,855 : ***** Transfer task : TREC *****
+
+
+2024-11-19 05:23:36,490 : Computed train embeddings
+2024-11-19 05:23:36,996 : Computed test embeddings
+2024-11-19 05:23:36,997 : Training pytorch-MLP-nhid0-adam-bs64 with 10-fold cross-validation
+2024-11-19 05:27:45,546 : [('reg:1e-05', 83.57), ('reg:0.0001', 83.79), ('reg:0.001', 83.27), ('reg:0.01', 78.83)]
+2024-11-19 05:27:45,547 : Cross-validation : best param found is reg = 0.0001             with score 83.79
+2024-11-19 05:27:45,548 : Evaluating...
+2024-11-19 05:27:53,865 :
+Dev acc : 83.79 Test acc : 83.6             for TREC
+
+2024-11-19 05:27:53,870 : ***** Transfer task : MRPC *****
+
+
+2024-11-19 05:27:53,956 : Computing embedding for train
+2024-11-19 05:28:13,564 : Computed train embeddings
+2024-11-19 05:28:13,564 : Computing embedding for test
+2024-11-19 05:28:22,251 : Computed test embeddings
+2024-11-19 05:28:22,276 : Training pytorch-MLP-nhid0-adam-bs64 with 10-fold cross-validation
+2024-11-19 05:30:22,519 : [('reg:1e-05', 75.24), ('reg:0.0001', 75.22), ('reg:0.001', 75.24), ('reg:0.01', 74.88)]
+2024-11-19 05:30:22,520 : Cross-validation : best param found is reg = 1e-05             with score 75.24
+2024-11-19 05:30:22,520 : Evaluating...
+2024-11-19 05:30:26,259 : Dev acc : 75.24 Test acc 74.09; Test F1 81.97 for MRPC.
+
+------ test ------
++-------+-------+-------+-------+-------+--------------+-----------------+-------+
+| STS12 | STS13 | STS14 | STS15 | STS16 | STSBenchmark | SICKRelatedness |  Avg. |
++-------+-------+-------+-------+-------+--------------+-----------------+-------+
+| 73.26 | 80.61 | 73.39 | 80.56 | 78.45 |    79.72     |      78.28      | 77.75 |
++-------+-------+-------+-------+-------+--------------+-----------------+-------+
++-------+-------+-------+-------+-------+-------+-------+-------+
+|   MR  |   CR  |  SUBJ |  MPQA |  SST2 |  TREC |  MRPC |  Avg. |
++-------+-------+-------+-------+-------+-------+-------+-------+
+| 81.64 | 87.69 | 94.32 | 89.39 | 86.49 | 83.60 | 74.09 | 85.32 |
++-------+-------+-------+-------+-------+-------+-------+-------+
